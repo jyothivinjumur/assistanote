@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'landings/index'
+  get 'emails/index'
 
   resources :emails do
   #->Prelang (voting/acts_as_votable)
