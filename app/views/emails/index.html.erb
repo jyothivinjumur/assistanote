@@ -1,38 +1,34 @@
 <%- model_class = Email -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => Email %></h1>
+  <h3><%=t '.title', :default => Email %></h3>
 </div>
 <table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
-      <th><%= model_class.human_attribute_name(:reference_id) %></th>
-      <th><%= model_class.human_attribute_name(:path) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      <th><%= model_class.human_attribute_name(:reference_id) %></th> 
+      <th>Voted</th>      
+      <th><%= model_class.human_attribute_name(:category) %></th>      
     </tr>
   </thead>
   <tbody>
     <% @emails.each do |email| %>
       <tr>
         <td><%= email.id %></td>
-        <td><%= email.reference_id %></td>
-        <td><%= email.path %></td>
-        <td><%=l email.created_at, format: :long %></td>
         <td>
           <%= link_to email_path(email), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
-            <%= glyph 'info-sign' %>
-            <%= glyph 'pencil' %>
-          <%- end -%>
-          <%= link_to email_path(email), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
-            <%= glyph 'remove' %>
-          <%- end -%>
-        </td>
+          <%= email.reference_id %></td>              
+          <%- end -%> 
+          
+          <td>
+          
+          </td>        
+
+        <td><%= email.category %></td>        
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_email_path,
-            :class => 'btn btn-primary' %>
+
+<%= will_paginate @posts %>

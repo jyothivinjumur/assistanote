@@ -5,6 +5,7 @@ class EmailsController < ApplicationController
   # GET /emails.json
   def index
     @emails = Email.all
+    @emails = Email.paginate(:page => params[:page])
   end
 
   # GET /emails/1
@@ -80,6 +81,22 @@ class EmailsController < ApplicationController
     redirect_to action: :index
   end
 
+  def upvote
+    @email = Email.find(params[:id])
+    @email.liked_by current_user    
+    redirect_to @email
+    
+  end
+
+  def downvote
+    @email = Email.find(params[:id])
+    @email.downvote_from current_user
+    redirect_to @email    
+  end
+
+  def read
+    File.read(Rails.application.config.enronfiles + @email.reference_id)
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

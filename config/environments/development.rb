@@ -34,4 +34,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Location of directory for storing all the enron files
+  config.enronfiles = "/Users/jyothi/gitprojects/sampledata/"
 end

@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Annotassist</title>
+  <title>Annotation Assistant</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 <meta name="viewport" content="width=device-width, initial-scale=1"/></head>
+
 <body>
 <%= render partial: "elements/navbar" %>
 <%= bootstrap_flash %>
 
 
-<%= yield %>
-
+  <div class="container">
+    <div class="row">
+      <div class="span9"><%= yield %></div>
+      <div class="span3">
+        <h4>Help</h4>
+        You can click here to learn more
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>

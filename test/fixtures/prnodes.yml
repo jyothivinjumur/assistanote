@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pgid: 1
+  pgnodename: MyString
+  pgscore: 9.99
+
+two:
+  pgid: 1
+  pgnodename: MyString
+  pgscore: 9.99

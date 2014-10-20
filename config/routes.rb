@@ -18,7 +18,7 @@ end
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'landings#index'
+  root 'emails#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -79,6 +79,13 @@ end
     post   "signup"  => "users/registrations#create", as: :user_registration
     put    "signup"  => "users/registrations#update", as: :update_user_registration
     get    "account" => "users/registrations#edit",   as: :edit_user_registration
+  end
+
+  resources :emails do
+    member do
+      post "like", to: "emails#upvote"
+      post "dislike", to: "emails#downvote"
+    end
   end
 
 end
