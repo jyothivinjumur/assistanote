@@ -291,6 +291,7 @@ DEPENDENCIES
   fuzzy_match
   jbuilder (~> 2.0)
   jquery-rails
+  mail
   mysql2
   omniauth
   omniauth-facebook

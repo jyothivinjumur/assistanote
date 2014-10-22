@@ -5,10 +5,11 @@
 
 <table>
 <tr><td>
-    <%= button_to "Priviledged", like_email_path(@email), :class => "btn btn-success"%> 
+    <%= button_to "Priviledged", like_email_path(@email), :class => "btn btn-info"%> 
 </td>
+<td colspan=2></td>
 <td>
-    <%= button_to "Not Priviledged", dislike_email_path(@email), :class => "btn btn-danger"%>  
+    <%= button_to "Not Priviledged", dislike_email_path(@email), :class => "btn btn-info "%>  
 </td>
 </tr>
 </table>
@@ -19,7 +20,7 @@
       <dd><pre class="lead"><%= @email.reference_id %></pre></dd> -->
       <!-- <dt class="label label-default"><%= model_class.human_attribute_name(:path) %></dt> -->
       <dd><pre class="small">
-        <%=  File.read(Rails.application.config.enronfiles + @email.reference_id) %>
+        <%=  readfile %>
       </pre></dd>
   </dl>
 </div>

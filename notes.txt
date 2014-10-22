@@ -3,3 +3,27 @@ rails generate model prnode pgid:integer:index pgnodename:string:index pgscore:d
 rake db:migrate
 
 rails g migration pgscore_type_in_prnode
+
+rails g controller prnode new create
+
+
+############################
+# 1. read from,to,cc into arrays
+    # 2. figure out how to query the prnodes table  
+    # this takes a hash of options, almost all of which map directly
+    # to the familiar database.yml in rails
+    # See http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/MysqlAdapter.html
+    # client = Mysql2::Client.new(:host => "localhost", :username => "root", :database => "anotassist_dev")
+    # client = Client.find(2)
+
+    # results = client.query("SELECT * FROM prnodes as p WHERE p.pgnodename='"+fromArray+"'") do |row|
+    #   puts "Our Query Results"
+    #   puts row
+    # end 
+     
+
+    # Read the To and From address into a local vairable and compare with db values
+    # color accordingly 
+    
+
+    

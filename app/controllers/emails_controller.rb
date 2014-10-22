@@ -94,9 +94,17 @@ class EmailsController < ApplicationController
     redirect_to @email    
   end
 
-  def read
+  def readfile
+    mail = Mail.read(Rails.application.config.enronfiles + @email.reference_id)
+    # puts mail.subject
+    toArray = mail.to
+    fromArray = mail.from
+    ccArray = mail.cc
+    puts fromArray
     File.read(Rails.application.config.enronfiles + @email.reference_id)
+
   end
+  helper_method :readfile
 
   private
     # Use callbacks to share common setup or constraints between actions.

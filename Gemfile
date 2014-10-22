@@ -57,5 +57,7 @@ gem 'tzinfo-data'
 # Matching name appearing the document with the nodes IDS
 gem 'fuzzy_match'
 
+# email parsing
+gem 'mail'
 
 

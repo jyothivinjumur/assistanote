@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'prnode/new'
+
+  get 'prnode/create'
+
   get 'emails/index'
 
   resources :emails do
