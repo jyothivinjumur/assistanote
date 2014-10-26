@@ -5,15 +5,21 @@
 
 <table>
 <tr><td>
-    <%= button_to "Priviledged", like_email_path(@email), :class => "btn btn-info"%> 
+    <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-info"%> 
 </td>
 <td colspan=2></td>
 <td>
-    <%= button_to "Not Priviledged", dislike_email_path(@email), :class => "btn btn-info "%>  
+    <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-info "%>  
+</td>
+<td colspan=10></td>
+<td>
+    <%= button_to " Show Attachements ", :class => "btn btn-info "%>  
 </td>
 </tr>
 </table>
 
+<table>
+  <tr> <td>
 <div class="fieldset">
   <dl>
       <!-- <dt class="label label-default"><%= model_class.human_attribute_name(:reference_id) %></dt>
@@ -24,6 +30,15 @@
       </pre></dd>
   </dl>
 </div>
+</td>
+  <td>
+  <div class="legendset">
+      <legend>Personalia:</legend>
+  </div>
+  </td>
+</tr>
+</table>
+
 
 <div class="form-group">
   <%= link_to t('.back', :default => t("helpers.links.back")),

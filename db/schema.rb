@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141020005215) do
+ActiveRecord::Schema.define(version: 20141026122612) do
 
   create_table "attachments", force: true do |t|
     t.string   "reference_id"
@@ -64,6 +64,15 @@ ActiveRecord::Schema.define(version: 20141020005215) do
 
   add_index "prnodes", ["pgid"], name: "index_prnodes_on_pgid", using: :btree
   add_index "prnodes", ["pgnodename"], name: "index_prnodes_on_pgnodename", using: :btree
+
+  create_table "relations", force: true do |t|
+    t.string   "email"
+    t.integer  "node"
+    t.string   "recipient"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "email_id"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

@@ -94,17 +94,129 @@ class EmailsController < ApplicationController
     redirect_to @email    
   end
 
+  def hasvoted(email)
+    email.votes_for.down.by_type(current_user).inspect
+    #if email.votes_for.size > 0
+    #  true
+    #else
+    #  false
+    #end
+  end
+  helper_method :hasvoted
+
   def readfile
-    mail = Mail.read(Rails.application.config.enronfiles + @email.reference_id)
-    # puts mail.subject
-    toArray = mail.to
-    fromArray = mail.from
-    ccArray = mail.cc
-    puts fromArray
-    File.read(Rails.application.config.enronfiles + @email.reference_id)
+    content = File.read(Rails.application.config.enronfiles + @email.reference_id)
+    mail = Mail.read(Rails.application.config.enronfiles + @email.reference_id)   
+
+    toArray = convertToArr(mail.to)
+    fromArray = convertToArr(mail.from)
+    ccArray = convertToArr(mail.cc)     
+    # Get all senders and recipients of email in one array
+    allPeople = toArray + fromArray + ccArray
+
+    score = ""
+
+    # Get all people (nodes) referenced in the email
+    relations = @email.relation
+
+    unless relations.nil? 
+      referenced_nodes = relations.recipient.split(",") << relations.node   
+      # Get all nodes and their associated scores
+      referenced_nodes_scores =  getscore(referenced_nodes)
+
+      
+      allPeople.each do |person|
+        score2 = find_score(person, referenced_nodes_scores)
+        content = content.gsub(person, "<br>#{person}::#{score2}</br>")
+      end
+    end
+
+
+    
+
+    # prepare output
+    output = "\n"
+
+
+    # output += "Date: #{mail.date.to_s} \n"
+    # output += "From: #{fromArray} [#{from_nodename}] [#{from_score}]\n"
+    # output += "To: #{toArray} \n"
+    # output += "CC: #{ccArray} \n"
+    # output += "#{referenced_nodes_scores.inspect} \n"
+    output += "#{score} \n"    
+    output += content
+
+    # output += "-----------------------------------------------\n"
+    # output += "-----------------------------------------------\n"
+    # output += "-----------------------------------------------\n"
+    # output += "-----------------------------------------------\n"
+    # output += File.read(Rails.application.config.enronfiles + @email.reference_id)
 
   end
   helper_method :readfile
+
+  def convertToArr(mailtofromcc)
+    tArr = Array.new
+    if (mailtofromcc.instance_of? String)  
+      tArr = mailtofromcc.split(",") 
+    elsif mailtofromcc.nil? || mailtofromcc.empty?
+      tArr = []    
+    else
+      mailtofromcc.each {|to| tArr << to}
+    end  
+  end
+
+
+  def find_score(node, referenced_nodes_scores)
+    score = 0
+    allnodes = []
+    referenced_nodes_scores.each do |email, score|
+      allnodes << email
+    end
+    match = FuzzyMatch.new(allnodes).find(node)
+
+    if match.nil?
+      score = 0
+    else
+      score = referenced_nodes_scores["#{match}"]
+    end
+
+    # "===========> [#{node}]" + " [#{match}:#{score}] \n"
+    score.to_s
+
+  end
+
+  def getscore(ids)
+    scores = Hash.new
+    ids.each do |id|
+      scores["#{Prnode.find_by_pgid(id.to_i).pgnodename}"] = Prnode.find_by_pgid(id.to_i).pgscore      
+    end
+    scores
+  end
+
+  # returns [nodename] [score] ordered by node_text
+  # def getscore(node_arr, node_text)
+  #   ret = []
+  #   node_text.each do |n1|
+  #     node_arr.each do |n2|
+  #       if()
+  #     end
+  #   end
+  # end
+
+  def geternode(text)
+    #@prnode = Prnode.where("pgscore > 0").first.pgnodename
+
+    @prnodes = Prnode.select(:pgnodename)
+
+    puts "DEBUGHEeeeeeeeeeeeeeeee"
+    # puts @prnodes.inspect
+    #[@prnodes.first.pgnodename, @prnodes.first.pgscore]
+
+    FuzzyMatch.new(@prnodes).find(text)
+
+  end
+  helper_method :geternode
 
   private
     # Use callbacks to share common setup or constraints between actions.

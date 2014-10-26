@@ -24,6 +24,28 @@ rails g controller prnode new create
 
     # Read the To and From address into a local vairable and compare with db values
     # color accordingly 
+
+
+    <!-- 
+  <div class="container">
+    <div class="row">
+      <div class="span9"><%= yield %></div>
+      <div class="span3">
+        <h4>Help</h4>
+        You can click here to learn more ... bla bla bla
+      </div>
+    </div>
+  </div> -->
+
+  #####################################
+
+  # relating relations table with email
+  # run the following command 
+update relations r
+join emails e on r.email = e.reference_id
+set r.email_id = e.id;
+
+
     
 
     

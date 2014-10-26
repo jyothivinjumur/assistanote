@@ -23,7 +23,7 @@
 
 // Give everything in 'yield' margin to separate it.
 .yield {
-  margin: 30px;
+  margin: 100px;
 }
 
 // Constrain forms for models (scaffolded models) so they aren't full page width.
@@ -34,4 +34,28 @@
 //->Prelang (user_login:devise)
 .form-user {
   max-width: 450px;
+}
+
+
+body {
+  margin: 20px 100px 10px 100px;
+  font: 100% Helvetica, sans-serif;
+  font-size: 14px;
+  background-color: #efefef;
+}
+
+pre {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0;
+    width: 950px;
+}
+
+legend {
+    display: block;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: solid;
+     width: 50px;
 }

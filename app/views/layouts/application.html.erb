@@ -12,15 +12,13 @@
 <%= bootstrap_flash %>
 
 
-  <div class="container">
-    <div class="row">
-      <div class="span9"><%= yield %></div>
-      <div class="span3">
-        <h4>Help</h4>
-        You can click here to learn more ... bla bla bla
-      </div>
-    </div>
-  </div>
+
+<div id="panelLeft"> 
+</div>
+<div class="span9" id="panelMain"><%= yield %></div>
+<div id="panelRight">
+</div>
+
 </body>
 
 </html>

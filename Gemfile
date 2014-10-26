@@ -60,4 +60,7 @@ gem 'fuzzy_match'
 # email parsing
 gem 'mail'
 
+#for coloring texts
+gem 'colorize'
+
 
