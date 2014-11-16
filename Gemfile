@@ -63,4 +63,4 @@ gem 'mail'
 #for coloring texts
 gem 'colorize'
 
-
+gem 'htmlentities'

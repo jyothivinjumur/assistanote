@@ -119,19 +119,9 @@ class EmailsController < ApplicationController
     # Get all people (nodes) referenced in the email
     relations = @email.relation
 
-    unless relations.nil? 
-      referenced_nodes = relations.recipient.split(",") << relations.node   
-      # Get all nodes and their associated scores
-      referenced_nodes_scores =  getscore(referenced_nodes)
+    
 
-      
-      allPeople.each do |person|
-        score2 = find_score(person, referenced_nodes_scores)
-        content = content.gsub(person, "<br>#{person}::#{score2}</br>")
-      end
-    end
-
-
+    # content = content.gsub("\n", "<br/><br/>")
     
 
     # prepare output
@@ -144,7 +134,20 @@ class EmailsController < ApplicationController
     # output += "CC: #{ccArray} \n"
     # output += "#{referenced_nodes_scores.inspect} \n"
     output += "#{score} \n"    
-    output += content
+    output += HTMLEntities.new.encode(content)
+
+    unless relations.nil? 
+      referenced_nodes = relations.recipient.split(",") << relations.node   
+      # Get all nodes and their associated scores
+      referenced_nodes_scores =  getscore(referenced_nodes)
+
+      
+      allPeople.each do |person|
+        score2 = find_score(person, referenced_nodes_scores)
+        output = output.gsub(person, "<b><font color=\"red\")>#{person}::#{score2}</font></b>")
+      end
+    end
+    output
 
     # output += "-----------------------------------------------\n"
     # output += "-----------------------------------------------\n"

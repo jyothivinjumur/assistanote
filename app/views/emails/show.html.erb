@@ -25,16 +25,14 @@
       <!-- <dt class="label label-default"><%= model_class.human_attribute_name(:reference_id) %></dt>
       <dd><pre class="lead"><%= @email.reference_id %></pre></dd> -->
       <!-- <dt class="label label-default"><%= model_class.human_attribute_name(:path) %></dt> -->
-      <dd><pre class="small">
-        <%=  readfile %>
-      </pre></dd>
+      <dd><pre class="small">        
+        <%=  readfile.html_safe %>
+        </pre>
+      </dd>
   </dl>
 </div>
 </td>
   <td>
-  <div class="legendset">
-      <legend>Personalia:</legend>
-  </div>
   </td>
 </tr>
 </table>
