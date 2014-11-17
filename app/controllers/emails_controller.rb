@@ -1,9 +1,12 @@
 class EmailsController < ApplicationController
   before_action :set_email, only: [:show, :edit, :update, :destroy, :vote]
 
+  skip_before_filter :require_login
+
   # GET /emails
   # GET /emails.json
   def index
+
     @emails = Email.all
     @emails = Email.paginate(:page => params[:page])
   end
@@ -113,13 +116,14 @@ class EmailsController < ApplicationController
     ccArray = convertToArr(mail.cc)     
     # Get all senders and recipients of email in one array
     allPeople = toArray + fromArray + ccArray
+    allPeople = allPeople.compact
 
     score = ""
 
     # Get all people (nodes) referenced in the email
     relations = @email.relation
 
-    
+
 
     # content = content.gsub("\n", "<br/><br/>")
     
@@ -141,7 +145,6 @@ class EmailsController < ApplicationController
       # Get all nodes and their associated scores
       referenced_nodes_scores =  getscore(referenced_nodes)
 
-      
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
         output = output.gsub(person, "<b><font color=\"red\")>#{person}::#{score2}</font></b>")
@@ -168,6 +171,11 @@ class EmailsController < ApplicationController
       mailtofromcc.each {|to| tArr << to}
     end  
   end
+
+  def show_attachments
+    @email.attachments
+  end
+  helper_method :show_attachments
 
 
   def find_score(node, referenced_nodes_scores)

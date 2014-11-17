@@ -36,5 +36,5 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Location of directory for storing all the enron files
-  config.enronfiles = "/Users/jyothi/gitprojects/sampledata/"
+  config.enronfiles = "/Users/adasgupta/Downloads/p/"
 end

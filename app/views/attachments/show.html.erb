@@ -1,26 +1,15 @@
 <%- model_class = Attachment -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => Attachment %></h1>
-</div>
+
+<%= link_to email_path(@attachment.email), :class => 'btn btn-default' do %>
+    Back
+<%- end -%>
+
+<div class="container"></div>
 
 <div class="fieldset">
   <dl>
-      <dt class="label label-default"><%= model_class.human_attribute_name(:reference_id) %></dt>
-      <dd><pre class="prettyprint"><%= @attachment.reference_id %></pre></dd>
-      <dt class="label label-default"><%= model_class.human_attribute_name(:path) %></dt>
-      <dd><pre class="prettyprint"><%= @attachment.path %></pre></dd>
+      <dt class="label label-default"><%= model_class.human_attribute_name(:Attachment) %></dt>
+      <dd><pre class="prettyprint"><%=  readfile.html_safe %></pre></dd>
   </dl>
-</div>
-
-<div class="form-group">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              attachments_path, :class => 'btn btn-default'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_attachment_path(@attachment), :class => 'btn btn-default' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              attachment_path(@attachment),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
 </div>
 

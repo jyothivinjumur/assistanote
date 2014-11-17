@@ -12,11 +12,24 @@
     <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-info "%>  
 </td>
 <td colspan=10></td>
-<td>
-    <%= button_to " Show Attachements ", :class => "btn btn-info "%>  
-</td>
 </tr>
 </table>
+
+<table>
+  <% if @email.attachments.count > 0 %>
+      <% @email.attachments.each do |attachment| %>
+          <tr><td>
+            <%= image_tag "attachment.png", size: "20x20", alt: "attachment" %>
+            <%= link_to attachment_path(attachment), :class => 'btn btn-default' do %>
+                <%= attachment.reference_id %>
+            <%- end -%>
+          </td>
+          </tr>
+      <% end %>
+  <% end %>
+</table>
+
+
 
 <table>
   <tr> <td>

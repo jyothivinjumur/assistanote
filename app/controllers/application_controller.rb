@@ -3,7 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_filter :authenticate_user!
+  before_filter :configure_permitted_parameters, if: :devise_controller? or
 
   protected
 
@@ -14,8 +15,18 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
+  #def authenticate_user!
+  #  if user_signed_in?
+  #    super
+  #  else
+  #    redirect_to login_path, :notice => 'if you want to add a notice'
+  #    ## if you want render 404 page
+  #    ## render :file => File.join(Rails.root, 'public/404'), :formats => [:html], :status => 404, :layout => false
+  #  end
+  #end
 
   private
+
   
   #-> Prelang (user_login:devise)
   def require_user_signed_in

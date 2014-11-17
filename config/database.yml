@@ -16,7 +16,7 @@ development:
     database: anotassist_dev
     pool: 5
     username: root
-    password: 
+    password: sati
     host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -39,5 +39,5 @@ production:
     database: anotassist_prod
     pool: 5
     username: root
-    password:
+    password: sati
     host: localhost
