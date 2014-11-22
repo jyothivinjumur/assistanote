@@ -46,6 +46,22 @@ join emails e on r.email = e.reference_id
 set r.email_id = e.id;
 
 
+## clean files
+files = `ls p/*`
+files = files.gsub!("p/","")
+files = files.split("\n")
+
+email = open("emails.csv", 'w')
+attachement = open("attachements.csv", 'w')
+
+files.each do |f|
+  if(f.split(".").count == 4)
+    email.write("#{f}\n")
+  else
+    attachement.write("#{f}\n")
+  end
+end
+
     
 
     

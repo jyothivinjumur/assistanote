@@ -1,7 +1,5 @@
 <%- model_class = Email -%>
-<!-- <div class="page-header">
-  <h3><%=t '.title', :default => Email %></h3>
-</div> -->
+
 <table class="table table-striped">
   <thead>
     <tr>
@@ -23,8 +21,7 @@
           <td>
             <% if current_user.voted_for? email %>
                 <%= image_tag "tick.png", size: "20x20", alt: "attachment" %>
-            <% else %>
-                <!--<%= image_tag "cross.png", size: "20x20", alt: "attachment" %>-->
+
             <%- end -%>
           </td>        
 
@@ -36,3 +33,13 @@
 
 
 <%= will_paginate @posts %>
+
+<br />
+<div class="label label-default">Progress</div>
+<div class="bs-example">
+  <div class="progress">
+    <div class="progress-bar progress-bar-success" style="width: <%= (current_user.votes.count.to_f / Email.count) * 100%>%;">
+      <span class="sr-only">60% Complete</span>
+    </div>
+  </div>
+</div>

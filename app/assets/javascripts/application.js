@@ -16,3 +16,23 @@
 //= require bootstrap
 
 //= require_tree .
+//= require jquery-ui
+//= require jquery.turbolinks
+
+
+$(document).ready(function() {
+    $('.mytooltip').tooltipster({
+        contentAsHTML: true,
+        theme: 'tooltipster-noir',
+        trigger: 'hover',
+        offsetX: 0,
+        offsetY: 0,
+        onlyOne: true
+    });
+});
+
+//----------------- sticky
+$(document).ready(function(){
+    $("#sticker").sticky({topSpacing:0});
+});
+

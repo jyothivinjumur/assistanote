@@ -129,7 +129,7 @@ class EmailsController < ApplicationController
     
 
     # prepare output
-    output = "\n"
+    output = ""
 
 
     # output += "Date: #{mail.date.to_s} \n"
@@ -147,9 +147,17 @@ class EmailsController < ApplicationController
 
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
-        output = output.gsub(person, "<b><font color=\"red\")>#{person}::#{score2}</font></b>")
+        #output = output.gsub(person, "<b><font color=\"red\")>#{person}::#{score2}</font></b>")
+
+        #output = output.gsub(person, "<span class=\"btn btn-default mytooltip\" title=\"#{score2}\">#{person}</span>")
+
+        output = output.gsub(person, "<code class=\"mytooltip\" title=\"#{score2}\">#{person}</code>")
+
+
+        output = output.gsub("\r\n", "<br />")
       end
     end
+
     output
 
     # output += "-----------------------------------------------\n"

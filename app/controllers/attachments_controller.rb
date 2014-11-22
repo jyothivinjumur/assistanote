@@ -91,20 +91,9 @@ class AttachmentsController < ApplicationController
     # Get all people (nodes) referenced in the email
     relations = @email.relation
 
+    output = ""
 
 
-    # content = content.gsub("\n", "<br/><br/>")
-
-
-    # prepare output
-    output = "\n"
-
-
-    # output += "Date: #{mail.date.to_s} \n"
-    # output += "From: #{fromArray} [#{from_nodename}] [#{from_score}]\n"
-    # output += "To: #{toArray} \n"
-    # output += "CC: #{ccArray} \n"
-    # output += "#{referenced_nodes_scores.inspect} \n"
     output += "#{score} \n"
     output += HTMLEntities.new.encode(content)
 
@@ -117,6 +106,7 @@ class AttachmentsController < ApplicationController
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
         output = output.gsub(person, "<b><font color=\"red\")>#{person}::#{score2}</font></b>")
+        output = output.gsub("\n", "<br />")
       end
     end
     output

@@ -64,3 +64,9 @@ gem 'mail'
 gem 'colorize'
 
 gem 'htmlentities'
+
+gem 'chartkick'
+gem 'groupdate'
+gem 'jquery-ui-rails'
+
+gem 'jquery-turbolinks'

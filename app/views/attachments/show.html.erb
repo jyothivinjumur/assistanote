@@ -6,10 +6,15 @@
 
 <div class="container"></div>
 
-<div class="fieldset">
-  <dl>
-      <dt class="label label-default"><%= model_class.human_attribute_name(:Attachment) %></dt>
-      <dd><pre class="prettyprint"><%=  readfile.html_safe %></pre></dd>
-  </dl>
-</div>
+<!--<div class="fieldset">-->
+  <!--<dl>-->
+      <!--<dt class="label label-default"><%= model_class.human_attribute_name(:Attachment) %></dt>-->
+      <!--<dd><pre class="prettyprint"><%=  readfile.html_safe %></pre></dd>-->
+  <!--</dl>-->
+<!--</div>-->
 
+
+<div class="fieldset"> <div class="mark">
+  <%=  readfile.html_safe %>
+</div>
+</div>

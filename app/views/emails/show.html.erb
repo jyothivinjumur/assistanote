@@ -1,58 +1,61 @@
 <%- model_class = Email -%>
-<!-- <div class="page-header">
-  <h5><%=t '.title', :default => Email %></h5>
-</div> -->
-
-<table>
-<tr><td>
-    <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-info"%> 
-</td>
-<td colspan=2></td>
-<td>
-    <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-info "%>  
-</td>
-<td colspan=10></td>
-</tr>
-</table>
-
-<table>
-  <% if @email.attachments.count > 0 %>
-      <% @email.attachments.each do |attachment| %>
-          <tr><td>
-            <%= image_tag "attachment.png", size: "20x20", alt: "attachment" %>
-            <%= link_to attachment_path(attachment), :class => 'btn btn-default' do %>
-                <%= attachment.reference_id %>
-            <%- end -%>
-          </td>
-          </tr>
-      <% end %>
-  <% end %>
-</table>
 
 
+<!--<table>-->
+<!--<tr><td >-->
+    <!--<%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-info"%>-->
+<!--</td>-->
+<!--<td colspan=2></td>-->
+<!--<td>-->
+    <!--<%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-info "%>-->
+<!--</td>-->
+<!--<td colspan=10></td>-->
+<!--</tr>-->
+<!--</table>-->
 
-<table>
-  <tr> <td>
-<div class="fieldset">
-  <dl>
-      <!-- <dt class="label label-default"><%= model_class.human_attribute_name(:reference_id) %></dt>
-      <dd><pre class="lead"><%= @email.reference_id %></pre></dd> -->
-      <!-- <dt class="label label-default"><%= model_class.human_attribute_name(:path) %></dt> -->
-      <dd><pre class="small">        
-        <%=  readfile.html_safe %>
-        </pre>
-      </dd>
-  </dl>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 blog-main">
+        <table>
+            <% if @email.attachments.count > 0 %>
+                <% @email.attachments.each do |attachment| %>
+                    <tr><td>
+                      <%= image_tag "attachment.png", size: "20x20", alt: "attachment" %>
+                      <%= link_to attachment_path(attachment), :class => 'btn btn-default' do %>
+                          <%= attachment.reference_id %>
+                      <%- end -%>
+                    </td>
+                    </tr>
+                <% end %>
+            <% end %>
+        </table>
+
+        <div class="fieldset">
+            <div class="text-muted">
+                <%=  readfile.html_safe %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+      <div id="sticker" class="sidebar-module sidebar-module-inset">
+            <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-info"%>
+            <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-info "%>
+            <%= pie_chart Vote.group(:voter_id).count %>
+      </div>
+    </div>
+
+  </div>
 </div>
-</td>
-  <td>
-  </td>
-</tr>
-</table>
+
+
+
+
+
+
 
 
 <div class="form-group">
   <%= link_to t('.back', :default => t("helpers.links.back")),
               emails_path, :class => 'btn btn-default'  %>  
 </div>
-
