@@ -62,6 +62,10 @@ files.each do |f|
   end
 end
 
+## Joining attachements with emails
+UPDATE attachments a
+JOIN emails e ON SUBSTRING_INDEX( a.reference_id , '.', 3 ) = SUBSTRING_INDEX( e.reference_id , '.', 3 )
+SET a.email_id = e.id
     
 
     

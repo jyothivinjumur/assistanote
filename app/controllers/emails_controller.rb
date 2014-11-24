@@ -108,8 +108,8 @@ class EmailsController < ApplicationController
   helper_method :hasvoted
 
   def readfile
-    content = File.read(Rails.application.config.enronfiles + @email.reference_id)
-    mail = Mail.read(Rails.application.config.enronfiles + @email.reference_id)   
+    content = @email.content
+    mail = Mail.read_from_string(content)
 
     toArray = convertToArr(mail.to)
     fromArray = convertToArr(mail.from)
@@ -123,22 +123,10 @@ class EmailsController < ApplicationController
     # Get all people (nodes) referenced in the email
     relations = @email.relation
 
-
-
-    # content = content.gsub("\n", "<br/><br/>")
-    
-
-    # prepare output
     output = ""
 
-
-    # output += "Date: #{mail.date.to_s} \n"
-    # output += "From: #{fromArray} [#{from_nodename}] [#{from_score}]\n"
-    # output += "To: #{toArray} \n"
-    # output += "CC: #{ccArray} \n"
-    # output += "#{referenced_nodes_scores.inspect} \n"
     output += "#{score} \n"    
-    output += HTMLEntities.new.encode(content)
+    output += HTMLEntities.new.encode(content.force_encoding("UTF-8"))
 
     unless relations.nil? 
       referenced_nodes = relations.recipient.split(",") << relations.node   
@@ -147,27 +135,62 @@ class EmailsController < ApplicationController
 
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
-        #output = output.gsub(person, "<b><font color=\"red\")>#{person}::#{score2}</font></b>")
 
-        #output = output.gsub(person, "<span class=\"btn btn-default mytooltip\" title=\"#{score2}\">#{person}</span>")
-
-        output = output.gsub(person, "<code class=\"mytooltip\" title=\"#{score2}\">#{person}</code>")
+        if (score2.to_f > 0.2)
+          output = output.gsub(person, "<code class=\"mytooltip my-code-special\" title=\"#{score2}\">#{person}</code>")
+        else
+          output = output.gsub(person, "<code class=\"mytooltip my-code-normal\" title=\"#{score2}\">#{person}</code>")
+        end
 
 
         output = output.gsub("\r\n", "<br />")
+
       end
     end
 
     output
 
-    # output += "-----------------------------------------------\n"
-    # output += "-----------------------------------------------\n"
-    # output += "-----------------------------------------------\n"
-    # output += "-----------------------------------------------\n"
-    # output += File.read(Rails.application.config.enronfiles + @email.reference_id)
-
   end
   helper_method :readfile
+
+
+  def getHistroy
+
+    relations = @email.relation
+    all_scores = []
+    all_colors = []
+
+    unless relations.nil?
+      sender = relations.node
+      receivers = relations.recipient.split(",")
+
+      all_scores << {:name => Prnode.find_by_pgid(sender.to_i).pgnodename, :data => getscorehash(sender)}
+      all_colors << if (getscorefornode(sender) > 0.2) then "#FF4000" else "#80FF00" end
+
+      receivers.each do |r|
+        all_scores << {:name => Prnode.find_by_pgid(r.to_i).pgnodename, :data => getscorehash(r)}
+        all_colors << if (getscorefornode(r) > 0.2) then "#FF4000" else "#80FF00" end
+      end
+
+      puts all_colors.inspect
+    end
+
+    return all_scores, all_colors
+
+  end
+  helper_method :getHistroy
+
+  def getscorehash(node)
+    scores = History.select(:sent_date,:score).where(:node => node)
+    data = {}
+    scores.each do |d|
+      data[d.sent_date] = d.score
+    end
+    data
+  end
+
+
+
 
   def convertToArr(mailtofromcc)
     tArr = Array.new
@@ -208,9 +231,13 @@ class EmailsController < ApplicationController
   def getscore(ids)
     scores = Hash.new
     ids.each do |id|
-      scores["#{Prnode.find_by_pgid(id.to_i).pgnodename}"] = Prnode.find_by_pgid(id.to_i).pgscore      
+      scores["#{Prnode.find_by_pgid(id.to_i).pgnodename}"] = Prnode.find_by_pgid(id.to_i).relative_rank
     end
     scores
+  end
+
+  def getscorefornode(node)
+    Prnode.find_by_pgid(node.to_i).relative_rank
   end
 
   # returns [nodename] [score] ordered by node_text

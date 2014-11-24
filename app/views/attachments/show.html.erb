@@ -1,20 +1,38 @@
 <%- model_class = Attachment -%>
 
-<%= link_to email_path(@attachment.email), :class => 'btn btn-default' do %>
-    Back
-<%- end -%>
 
-<div class="container"></div>
 
-<!--<div class="fieldset">-->
-  <!--<dl>-->
-      <!--<dt class="label label-default"><%= model_class.human_attribute_name(:Attachment) %></dt>-->
-      <!--<dd><pre class="prettyprint"><%=  readfile.html_safe %></pre></dd>-->
-  <!--</dl>-->
+<!--<div class="container"></div>-->
+
+
+<!--<div class="fieldset"> <div class="mark">-->
+  <!--<%=  readfile.html_safe %>-->
+<!--</div>-->
 <!--</div>-->
 
 
-<div class="fieldset"> <div class="mark">
-  <%=  readfile.html_safe %>
-</div>
+<div class="container">
+  <%= link_to email_path(@attachment.email), :class => 'btn btn-default' do %>
+      Back
+  <%- end -%>
+  <div class="row">
+    <div class="col-sm-8 blog-main">
+      <div class="container">
+        <div class='row'>
+          <div class='col-md-8 panel' ></div>
+        </div>
+      </div>
+
+      <div class="fieldset">
+        <div class="email-text">
+          <%=  readfile.html_safe %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+
+    </div>
+
+  </div>
 </div>

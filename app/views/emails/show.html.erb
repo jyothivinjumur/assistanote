@@ -15,7 +15,8 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-8 blog-main">
+    <div class="col-md-8 blog-main">
+
         <table>
             <% if @email.attachments.count > 0 %>
                 <% @email.attachments.each do |attachment| %>
@@ -30,21 +31,55 @@
             <% end %>
         </table>
 
+      <div class="container">
+          <div class='row'>
+              <div class='col-md-8 panel' ></div>
+          </div>
+      </div>
+
         <div class="fieldset">
-            <div class="text-muted">
+            <div class="email-text">
                 <%=  readfile.html_safe %>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-      <div id="sticker" class="sidebar-module sidebar-module-inset">
-            <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-info"%>
-            <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-info "%>
-            <%= pie_chart Vote.group(:voter_id).count %>
+    <div class="col-md-4  blog-sidebar">
+      <!--<div class="container">-->
+        <div class='row'>
+          <div class='col-md-8 panel' ></div>
+        </div>
+      <!--</div>-->
+      <div id="sticker">
+
+        <%= data, colors = getHistroy
+            unless colors.count.eql? 0
+                line_chart data, min: 0, max: 1,library: {legend: {position: "none"}, colors: colors, title: "History of interactions", vAxis:{title:"Priviledge probability"}}
+            end
+        %>
+
+          <div class="btn-group-vertical" role="group">
+                <div class='row'>
+                  <div class='col-md-8 my-panel' ></div>
+                </div>
+                <%= button_to " Priviledged ", like_email_path(@email), :class => "myButton btn btn-primary"%>
+
+
+                <div class='row'>
+                  <div class='col-md-8 my-panel' ></div>
+                </div>
+                <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "myButton btn btn-primary"%>
+
+
+          </div>
       </div>
+
     </div>
 
+  </div>
+  <div class="form-group">
+    <%= link_to t('.back', :default => t("helpers.links.back")),
+                emails_path, :class => 'btn btn-default'  %>
   </div>
 </div>
 
@@ -55,7 +90,4 @@
 
 
 
-<div class="form-group">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              emails_path, :class => 'btn btn-default'  %>  
-</div>
+

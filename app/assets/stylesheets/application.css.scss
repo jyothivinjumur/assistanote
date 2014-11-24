@@ -68,6 +68,57 @@ legend {
      width: 50px;
 }
 
+// My color overrides
+.navbar-default {
+  background-color: white;
+  border-color: #ffffff;
+}
+
+.email-text {
+  padding: 10px;
+  background: #eee;
+}
+
+.my-code-normal {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #000000;
+  background-color: #80FF00;
+  border-radius: 4px;
+}
+
+.my-code-special {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #000000;
+  background-color: #FF4000;
+  border-radius: 4px;
+}
+
+.btn-primary {
+  color: white;
+  background-color: #A4A4A4;
+  border-color: #A4A4A4;
+}
+
+.btn-primary-selected {
+  color: white;
+  background-color: #A4A4A4;
+  border-color: #A4A4A4;
+}
+
+.myButton {
+  width: 150px;
+}
+
+.my-panel {
+  margin-bottom: 20px;
+  background-color: white;
+
+}
+
+//---------------end
+
 // tooltip stuff
 // ----------------------------------------------------------------
 /* This is the default Tooltipster theme (feel free to modify or duplicate and create multiple themes!): */

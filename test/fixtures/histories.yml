@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  node: 1
+  sent_date: 
+  score: 
+
+two:
+  node: 1
+  sent_date: 
+  score: 

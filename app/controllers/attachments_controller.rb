@@ -74,9 +74,11 @@ class AttachmentsController < ApplicationController
 
 
   def readfile
+
+
     @email = @attachment.email
-    content = File.read(Rails.application.config.enronfiles + @attachment.reference_id)
-    mail = Mail.read(Rails.application.config.enronfiles + @email.reference_id)
+    content = @attachment.content
+    mail = Mail.read_from_string(content)
 
     toArray = convertToArr(mail.to)
     fromArray = convertToArr(mail.from)
@@ -95,7 +97,7 @@ class AttachmentsController < ApplicationController
 
 
     output += "#{score} \n"
-    output += HTMLEntities.new.encode(content)
+    output += HTMLEntities.new.encode(content.force_encoding("UTF-8"))
 
     unless relations.nil?
       referenced_nodes = relations.recipient.split(",") << relations.node

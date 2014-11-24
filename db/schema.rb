@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141026122612) do
+ActiveRecord::Schema.define(version: 20141123140439) do
 
   create_table "attachments", force: true do |t|
     t.string   "reference_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20141026122612) do
     t.integer  "email_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "content"
   end
 
   add_index "attachments", ["email_id"], name: "index_attachments_on_email_id", using: :btree
@@ -29,6 +30,7 @@ ActiveRecord::Schema.define(version: 20141026122612) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "category"
+    t.text     "content"
   end
 
   add_index "emails", ["category"], name: "index_emails_on_category", using: :btree
@@ -54,12 +56,32 @@ ActiveRecord::Schema.define(version: 20141026122612) do
   add_index "evaluations_users", ["evaluation_id"], name: "index_evaluations_users_on_evaluation_id", using: :btree
   add_index "evaluations_users", ["user_id"], name: "index_evaluations_users_on_user_id", using: :btree
 
+  create_table "histories", force: true do |t|
+    t.integer  "node"
+    t.date     "sent_date"
+    t.decimal  "score",      precision: 10, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "histories", ["node"], name: "index_histories_on_node", using: :btree
+  add_index "histories", ["sent_date"], name: "index_histories_on_sent_date", using: :btree
+
+  create_table "interactions", force: true do |t|
+    t.integer  "sender"
+    t.integer  "receiver"
+    t.text     "comm"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "prnodes", force: true do |t|
     t.integer  "pgid"
     t.string   "pgnodename"
-    t.decimal  "pgscore",    precision: 10, scale: 10
+    t.decimal  "pgscore",       precision: 10, scale: 10
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "relative_rank", precision: 10, scale: 2
   end
 
   add_index "prnodes", ["pgid"], name: "index_prnodes_on_pgid", using: :btree
