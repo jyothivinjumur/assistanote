@@ -70,3 +70,5 @@ gem 'groupdate'
 gem 'jquery-ui-rails'
 
 gem 'jquery-turbolinks'
+
+gem 'rails_12factor', group: :production
