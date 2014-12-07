@@ -136,10 +136,13 @@ class EmailsController < ApplicationController
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
 
-        if (score2.to_f > 0.2)
-          output = output.gsub(person, "<code class=\"mytooltip my-code-special\" title=\"#{score2}\">#{person}</code>")
+
+        if (score2.to_f >= 0.5)
+          output = output.gsub(person, "<code class=\"mytooltip my-code-50orhigher\" title=\"#{score2}\">#{person}</code>")
+        elsif (score2.to_f.between?(0.2,0.5))
+          output = output.gsub(person, "<code class=\"mytooltip my-code-20to50\" title=\"#{score2}\">#{person}</code>")
         else
-          output = output.gsub(person, "<code class=\"mytooltip my-code-normal\" title=\"#{score2}\">#{person}</code>")
+          output = output.gsub(person, "<code class=\"mytooltip my-code-20less\" title=\"#{score2}\">#{person}</code>")
         end
 
 
@@ -154,25 +157,45 @@ class EmailsController < ApplicationController
   helper_method :readfile
 
 
+  def highlight_terms(text)
+    words = {}
+    Termscore.all.each do |t|
+      words[t.term] = t.score
+
+      text.sub!(/#{t.term}/, "--#{t.term}--")
+
+    end
+    text
+
+
+  end
+
+
   def getHistroy
 
     relations = @email.relation
     all_scores = []
-    all_colors = []
+
 
     unless relations.nil?
       sender = relations.node
       receivers = relations.recipient.split(",")
 
-      all_scores << {:name => Prnode.find_by_pgid(sender.to_i).pgnodename, :data => getscorehash(sender)}
-      all_colors << if (getscorefornode(sender) > 0.2) then "#FF4000" else "#80FF00" end
-
-      receivers.each do |r|
-        all_scores << {:name => Prnode.find_by_pgid(r.to_i).pgnodename, :data => getscorehash(r)}
-        all_colors << if (getscorefornode(r) > 0.2) then "#FF4000" else "#80FF00" end
+      getscorehash(sender).each do |d|
+        all_scores << d
       end
 
-      puts all_colors.inspect
+      receivers.each do |r|
+        getscorehash(r).each do |d|
+          all_scores << d
+        end
+      end
+
+      all_colors = []
+      all_scores.each do |score_obj|
+        all_colors << node_color_matcher(Prnode.find_by_pgnodename(score_obj[:name]).pgid)
+      end
+
     end
 
     return all_scores, all_colors
@@ -180,15 +203,31 @@ class EmailsController < ApplicationController
   end
   helper_method :getHistroy
 
+
   def getscorehash(node)
+    series = []
     scores = History.select(:sent_date,:score).where(:node => node)
-    data = {}
     scores.each do |d|
-      data[d.sent_date] = d.score
+      data = {}
+      unless d.score < 0.02
+        data[d.sent_date] = d.score
+        series << {:name => Prnode.find_by_pgid(node.to_i).pgnodename, :data => data}
+      end
     end
-    data
+    series
   end
 
+  def node_color_matcher(node)
+    color = nil
+    if (getscorefornode(node) > 0.5)
+      color = "#E63E00"
+    elsif (getscorefornode(node).between?(0.2, 0.5))
+      color = "#FF6A33"
+    else
+      color = "#FFC7B2"
+    end
+    color
+  end
 
 
 

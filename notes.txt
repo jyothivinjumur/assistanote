@@ -1,5 +1,7 @@
 rails generate model prnode pgid:integer:index pgnodename:string:index pgscore:decimal
 
+rails generate model termscore term:string:index score:decimal
+
 rake db:migrate
 
 rails g migration pgscore_type_in_prnode

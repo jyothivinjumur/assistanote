@@ -19,11 +19,13 @@
 
         <table>
             <% if @email.attachments.count > 0 %>
+                <% counter = 1 %>
                 <% @email.attachments.each do |attachment| %>
                     <tr><td>
                       <%= image_tag "attachment.png", size: "20x20", alt: "attachment" %>
                       <%= link_to attachment_path(attachment), :class => 'btn btn-default' do %>
-                          <%= attachment.reference_id %>
+                          <%= "Attachment-#{counter}" %>
+                          <% counter = counter+1 %>
                       <%- end -%>
                     </td>
                     </tr>
@@ -53,8 +55,10 @@
       <div id="sticker">
 
         <%= data, colors = getHistroy
-            unless colors.count.eql? 0
-                line_chart data, min: 0, max: 1,library: {legend: {position: "none"}, colors: colors, title: "History of interactions", vAxis:{title:"Priviledge probability"}}
+            #unless colors.count.eql? 0
+            unless colors.nil? or colors.count.eql? 0
+
+                line_chart data, min: 0, max: 1,library: {legend: {position: "none"}, colors: colors, title: "History of interactions", vAxis:{title:"Priviledge probability"}, pointSize: 15,  pointShape: { type: 'circle'}}
             end
         %>
 

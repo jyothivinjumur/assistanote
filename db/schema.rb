@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141123140439) do
+ActiveRecord::Schema.define(version: 20141207205748) do
 
   create_table "attachments", force: true do |t|
     t.string   "reference_id"
@@ -95,6 +95,15 @@ ActiveRecord::Schema.define(version: 20141123140439) do
     t.datetime "updated_at"
     t.integer  "email_id"
   end
+
+  create_table "termscores", force: true do |t|
+    t.string   "term"
+    t.decimal  "score",      precision: 10, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "termscores", ["term"], name: "index_termscores_on_term", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

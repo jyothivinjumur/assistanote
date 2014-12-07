@@ -79,19 +79,28 @@ legend {
   background: #eee;
 }
 
-.my-code-normal {
+.my-code-20less {
   padding: 2px 4px;
   font-size: 90%;
   color: #000000;
-  background-color: #80FF00;
+  background-color: #FFC7B2;
   border-radius: 4px;
 }
 
-.my-code-special {
+.my-code-50orhigher {
   padding: 2px 4px;
   font-size: 90%;
   color: #000000;
-  background-color: #FF4000;
+  background-color: #E63E00;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.my-code-20to50 {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #000000;
+  background-color: #FF6A33;
   border-radius: 4px;
 }
 
@@ -443,3 +452,5 @@ legend {
 //  -khtml-border-top-right-radius:3px;
 //  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);
 //}
+
+.top-buffer { margin-top:20px; }
