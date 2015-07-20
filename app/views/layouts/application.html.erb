@@ -15,9 +15,10 @@
 
   <!--</script>-->
 
+
 </head>
 
-<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+
 
 <body>
 <%= render partial: "elements/navbar" %>
@@ -26,11 +27,20 @@
 
 
 
-<div id="panelLeft"> 
-</div>
-<div class="span9" id="panelMain"><%= yield %></div>
-<div id="panelRight">
-</div>
+<%= yield %>
+
+
+
+<footer>
+  <div class='col-md-12'>
+    <div class='panel' ></div>
+
+  </div>
+  <div align="center">
+    <img src="http://www.urhome.umd.edu/trademarks/marks/gr/primary.gif" alt="UMD logo" style="width:300px;height:40px;">
+  </div>
+</footer>
+
 
 </body>
 

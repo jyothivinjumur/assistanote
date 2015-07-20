@@ -86,15 +86,18 @@ class EmailsController < ApplicationController
 
   def upvote
     @email = Email.find(params[:id])
-    @email.liked_by current_user    
-    redirect_to @email
-    
+    @email.liked_by current_user
+    #TRACKER.track(current_user['email'], "email_UPVOTE")
+    redirect_to emails_path
+
   end
 
   def downvote
     @email = Email.find(params[:id])
     @email.downvote_from current_user
-    redirect_to @email    
+    #TRACKER.track(current_user['email'], "email_DOWNVOTE")
+    redirect_to emails_path
+    #redirect_to @email
   end
 
   def hasvoted(email)
@@ -107,7 +110,21 @@ class EmailsController < ApplicationController
   end
   helper_method :hasvoted
 
+
+  def getblurb(content)
+    mail = Mail.read_from_string(content)
+    sender = "#{mail.from}"[0..30].gsub!(/[^0-9A-Za-z\.@]/, '')
+    subject = "#{mail.subject}"[0..90]
+
+    [sender, subject]
+
+
+  end
+  helper_method :getblurb
+
   def readfile
+    #TRACKER.track(current_user['email'], "email_READ")
+
     content = @email.content
     mail = Mail.read_from_string(content)
 
@@ -170,38 +187,14 @@ class EmailsController < ApplicationController
 
   end
 
-
-  def getHistroy
-
-    relations = @email.relation
-    all_scores = []
-
-
-    unless relations.nil?
-      sender = relations.node
-      receivers = relations.recipient.split(",")
-
-      getscorehash(sender).each do |d|
-        all_scores << d
-      end
-
-      receivers.each do |r|
-        getscorehash(r).each do |d|
-          all_scores << d
-        end
-      end
-
-      all_colors = []
-      all_scores.each do |score_obj|
-        all_colors << node_color_matcher(Prnode.find_by_pgnodename(score_obj[:name]).pgid)
-      end
-
-    end
-
-    return all_scores, all_colors
-
+  def gethistory
+    data = [[1137111000,0.7695],[1137211000,0.7648],[1137311000,0.7648], [1137311000,0.7645], [1137411000,0.7638], [1137511000,0.7549], [1137611000,0.7562],[1137711000,0.7574], [1137811000,0.7543],[1137911000,0.7510],[1437316064, 0.7574] ]
+    #data.to_json
+    ActiveSupport::JSON.encode(data)
   end
-  helper_method :getHistroy
+  helper_method :gethistory
+
+
 
 
   def getscorehash(node)
