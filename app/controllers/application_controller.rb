@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # mixpanel tracking
+  TRACKER = Mixpanel::Tracker.new("1b32058342e0f05fc3421a7aae5cbdab")
+
   #->Prelang (user_login:devise)
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up)        { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }

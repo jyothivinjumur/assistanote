@@ -15,10 +15,11 @@
 //= require turbolinks
 //= require bootstrap
 
-//= require_tree .
+
 //= require jquery-ui
 //= require jquery.turbolinks
-
+//= require highstock
+//= require_tree .
 
 $(document).ready(function() {
     $('.mytooltip').tooltipster({

@@ -1,10 +1,16 @@
 <%- model_class = Email -%>
 
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="<%= emails_path %>">Home</a></li>
+</ul>
+
 <table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
-      <th><%= model_class.human_attribute_name(:reference_id) %></th> 
+      <!--<th><%= model_class.human_attribute_name(:reference_id) %></th>-->
+      <th>Email Reference Identifier</th>
+      <th>Subject</th>
       <th>Voted</th>      
 
     </tr>
@@ -12,18 +18,29 @@
   <tbody>
     <% @emails.each do |email| %>
       <tr>
-        <td><%= email.id %></td>
-        <td>
-          <%= link_to email_path(email), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
-          <%= email.reference_id %></td>
-          <%- end -%> 
+            <td><%= email.id %></td>
+
+            <% sender, subject = getblurb(email.content) %>
+
+            <td>
+              <%= link_to email_path(email), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+                <%= email.reference_id %>
+                <!--<%= sender %>-->
+              <%- end -%>
+            </td>
+            <td>
+              <%= link_to email_path(email), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+              <%= subject %>
+              <%- end -%>
+            </td>
+
           
           <td>
             <% if current_user.voted_for? email %>
                 <%= image_tag "tick.png", size: "20x20", alt: "attachment" %>
 
             <%- end -%>
-          </td>        
+          </td>
 
 
       </tr>
@@ -32,14 +49,14 @@
 </table>
 
 
-<%= will_paginate @posts %>
+    <%= will_paginate @posts %>
 
-<!--<br />-->
-<!--<div class="label label-default">Progress</div>-->
-<!--<div class="bs-example">-->
-  <!--<div class="progress">-->
-    <!--<div class="progress-bar progress-bar-success" style="width: <%= (current_user.votes.count.to_f / Email.count) * 100%>%;">-->
-      <!--<span class="sr-only">60% Complete</span>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
+<br />
+<div class="label label-default">Progress</div>
+<div class="bs-example">
+  <div class="progress">
+    <div class="progress-bar progress-bar-success" style="width: <%= (current_user.votes.count.to_f / Email.count) * 100%>%;">
+      <span class="sr-only">60% Complete</span>
+    </div>
+  </div>
+</div>

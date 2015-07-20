@@ -453,4 +453,12 @@ legend {
 //  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);
 //}
 
-.top-buffer { margin-top:20px; }
+.top-buffer { margin-top:30px; }
+
+
+// -----------
+.fieldset {
+  width: 100%;
+  height: 350px;
+  overflow-x: scroll;
+}
