@@ -1,3 +1,5 @@
+require 'csv'
+
 class EmailsController < ApplicationController
   before_action :set_email, only: [:show, :edit, :update, :destroy, :vote]
 
@@ -188,8 +190,15 @@ class EmailsController < ApplicationController
   end
 
   def gethistory
-    data = [[1137111000,0.7695],[1137211000,0.7648],[1137311000,0.7648], [1137311000,0.7645], [1137411000,0.7638], [1137511000,0.7549], [1137611000,0.7562],[1137711000,0.7574], [1137811000,0.7543],[1137911000,0.7510],[1437316064, 0.7574] ]
+    #data = [[1137111000,0.7695],[1137211000,0.7648],[1137311000,0.7648], [1137311000,0.7645], [1137411000,0.7638], [1137511000,0.7549], [1137611000,0.7562],[1137711000,0.7574], [1137811000,0.7543],[1137911000,0.7510],[1437316064, 0.7574] ]
     #data.to_json
+
+    data = []
+    CSV.foreach("public/assets/dateScores.csv") do |r|
+      a,b = r
+      data << [a.to_i, b.to_f]
+    end
+
     ActiveSupport::JSON.encode(data)
   end
   helper_method :gethistory

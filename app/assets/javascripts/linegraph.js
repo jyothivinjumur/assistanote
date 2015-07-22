@@ -75,6 +75,10 @@ $(function () {
                 }
             },
 
+            xAxis: {
+                type: 'datetime'
+            },
+
             series : [{
                 name : 'USD to EUR',
                 data : $('#graphContainer').data('series'),
@@ -84,7 +88,7 @@ $(function () {
             }, {
                 type : 'flags',
                 data : [{
-                    x : 1137211000,
+                    x : 1001320611,
                     title : 'Current date',
                     text : 'Date on which displayed email was sent'
                 }],
