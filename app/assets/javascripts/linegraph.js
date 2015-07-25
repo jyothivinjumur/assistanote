@@ -53,8 +53,10 @@ $(function () {
                 enabled: false
             },
 
+
+
             rangeSelector : {
-                selected : 0
+                selected : 5
             },
 
             title : {
@@ -71,7 +73,7 @@ $(function () {
 
             yAxis : {
                 title : {
-                    text : 'Exchange rate'
+                    text : ''
                 }
             },
 
@@ -80,7 +82,7 @@ $(function () {
             },
 
             series : [{
-                name : 'USD to EUR',
+                name : 'Privilege propensity',
                 data : $('#graphContainer').data('series'),
                 id : 'dataseries'
 
@@ -88,7 +90,7 @@ $(function () {
             }, {
                 type : 'flags',
                 data : [{
-                    x : 1001320611,
+                    x : $('#graphContainer').data('dt'),
                     title : 'Current date',
                     text : 'Date on which displayed email was sent'
                 }],

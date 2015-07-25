@@ -8,6 +8,8 @@ rails g migration pgscore_type_in_prnode
 
 rails g controller prnode new create
 
+bundle exec rails g migration ChangeTermScorePrecision
+
 
 ############################
 # 1. read from,to,cc into arrays

@@ -16,16 +16,18 @@
       Back
   <%- end -%>
   <div class="row">
-    <div class="col-sm-8 blog-main">
+    <div class=" blog-main">
       <div class="container">
         <div class='row'>
           <div class='col-md-8 panel' ></div>
         </div>
       </div>
 
-      <div class="fieldset">
+
+
+      <div class="fieldset_attachement">
         <div class="email-text">
-          <%=  readfile.html_safe %>
+          <%= readfile.gsub(/\n/, '<br/>').html_safe %>
         </div>
       </div>
     </div>
@@ -35,4 +37,9 @@
     </div>
 
   </div>
+
+  <!--<div>-->
+    <!--<%= readfile.gsub(/\n/, '<br/>').html_safe %>-->
+
+  <!--</div>-->
 </div>

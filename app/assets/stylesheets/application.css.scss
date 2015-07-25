@@ -462,3 +462,31 @@ legend {
   height: 350px;
   overflow-x: scroll;
 }
+
+.fieldset_attachement {
+  width: 100%;
+  height: 600px;
+  overflow-x: scroll;
+}
+
+// New colors for text highlighting
+.text-low-importance {
+  //padding: 2px 4px;
+  font-size: 90%;
+  color: #296614;
+  //border-radius: 4px;
+}
+
+.text-mid-importance {
+  //padding: 2px 4px;
+  font-size: 90%;
+  color: #FF6A33;
+  //border-radius: 4px;
+}
+
+.text-high-importance {
+  //padding: 2px 4px;
+  font-size: 90%;
+  color: #E63E00;
+  //border-radius: 4px;
+}

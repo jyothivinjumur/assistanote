@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141207205748) do
+ActiveRecord::Schema.define(version: 20150725164000) do
 
   create_table "attachments", force: true do |t|
     t.string   "reference_id"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20141207205748) do
 
   create_table "termscores", force: true do |t|
     t.string   "term"
-    t.decimal  "score",      precision: 10, scale: 2
+    t.decimal  "score",      precision: 10, scale: 5
     t.datetime "created_at"
     t.datetime "updated_at"
   end
