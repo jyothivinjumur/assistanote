@@ -2,6 +2,9 @@
 
 <ul class="nav nav-tabs">
   <li role="presentation" class="active"><a href="<%= emails_path %>">Home</a></li>
+  <ul class="nav navbar-nav navbar-right">
+    <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></li>
+  </ul>
 </ul>
 
 <table class="table table-striped">
@@ -18,13 +21,13 @@
   <tbody>
     <% @emails.each do |email| %>
       <tr>
-            <td><%= email.id %></td>
+            <td><%= email.id %> </td>
 
             <% sender, subject = getblurb(email.content) %>
 
             <td>
               <%= link_to email_path(email), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
-                <%= email.reference_id %>
+                <%= email.reference_id.sub(".txt","") %>
                 <!--<%= sender %>-->
               <%- end -%>
             </td>
@@ -49,7 +52,7 @@
 </table>
 
 
-    <%= will_paginate @posts %>
+    <%= will_paginate @emails %>
 
 <br />
 <div class="label label-default">Progress</div>
@@ -60,3 +63,5 @@
     </div>
   </div>
 </div>
+
+ <!---->

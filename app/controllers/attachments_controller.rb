@@ -10,6 +10,7 @@ class AttachmentsController < ApplicationController
   # GET /attachments/1
   # GET /attachments/1.json
   def show
+    TRACKER.track(current_user['email'], "READ_ATTACHMENT", {"email_id" => @attachment.email.id, "email_reference" => @attachment.email.reference_id})
   end
 
   # GET /attachments/new
@@ -73,8 +74,57 @@ class AttachmentsController < ApplicationController
     end
 
 
-  def readfile
+  #def readfile
+  #
+  #
+  #  @email = @attachment.email
+  #  content = @attachment.content
+  #  mail = Mail.read_from_string(content)
+  #
+  #  toArray = convertToArr(mail.to)
+  #  fromArray = convertToArr(mail.from)
+  #  ccArray = convertToArr(mail.cc)
+  #  # Get all senders and recipients of email in one array
+  #  allPeople = toArray + fromArray + ccArray
+  #  allPeople = allPeople.compact
+  #
+  #
+  #  score = ""
+  #
+  #  # Get all people (nodes) referenced in the email
+  #  relations = @email.relation
+  #
+  #  output = ""
+  #
+  #
+  #  output += "#{score} \n"
+  #  output += HTMLEntities.new.encode(content.force_encoding("UTF-8"))
+  #
+  #  unless relations.nil?
+  #    referenced_nodes = relations.recipient.split(",") << relations.node
+  #    # Get all nodes and their associated scores
+  #    referenced_nodes_scores =  getscore(referenced_nodes)
+  #
+  #
+  #    allPeople.each do |person|
+  #      score2 = find_score(person, referenced_nodes_scores)
+  #      output = output.gsub(person, "<b><font color=\"red\")>#{person}::#{score2}</font></b>")
+  #      output = output.gsub("\n", "<br />")
+  #    end
+  #  end
+  #  output
+  #
+  #  # output += "-----------------------------------------------\n"
+  #  # output += "-----------------------------------------------\n"
+  #  # output += "-----------------------------------------------\n"
+  #  # output += "-----------------------------------------------\n"
+  #  # output += File.read(Rails.application.config.enronfiles + @email.reference_id)
+  #
+  #end
+  #helper_method :readfile
 
+  def readfile
+    #TRACKER.track(current_user['email'], "email_READ")
 
     @email = @attachment.email
     content = @attachment.content
@@ -87,14 +137,12 @@ class AttachmentsController < ApplicationController
     allPeople = toArray + fromArray + ccArray
     allPeople = allPeople.compact
 
-
     score = ""
 
     # Get all people (nodes) referenced in the email
     relations = @email.relation
 
     output = ""
-
 
     output += "#{score} \n"
     output += HTMLEntities.new.encode(content.force_encoding("UTF-8"))
@@ -104,23 +152,50 @@ class AttachmentsController < ApplicationController
       # Get all nodes and their associated scores
       referenced_nodes_scores =  getscore(referenced_nodes)
 
-
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
-        output = output.gsub(person, "<b><font color=\"red\")>#{person}::#{score2}</font></b>")
-        output = output.gsub("\n", "<br />")
+
+
+        if (score2.to_f >= 0.5)
+          output = output.gsub(person, "<code class=\"mytooltip my-code-50orhigher\" title=\"#{score2}\">#{person}</code>")
+        elsif (score2.to_f.between?(0.2,0.5))
+          output = output.gsub(person, "<code class=\"mytooltip my-code-20to50\" title=\"#{score2}\">#{person}</code>")
+        else
+          output = output.gsub(person, "<code class=\"mytooltip my-code-20less\" title=\"#{score2}\">#{person}</code>")
+        end
+
+
+        output = output.gsub("\r\n", "<br />")
+
       end
     end
-    output
 
-    # output += "-----------------------------------------------\n"
-    # output += "-----------------------------------------------\n"
-    # output += "-----------------------------------------------\n"
-    # output += "-----------------------------------------------\n"
-    # output += File.read(Rails.application.config.enronfiles + @email.reference_id)
+    highlight_terms(output)
 
   end
   helper_method :readfile
+
+
+  def highlight_terms(text)
+    words = {}
+    #Termscore.all.each do |t|
+    Termscore.where("score>=1").each do |t|
+      words[t.term] = t.score
+
+      #text.sub!(/#{t.term}/, "<code class=\"mytooltip\" title=\"#{t.score}\"><u>#{t.term}</u></code>")
+
+
+      if (t.score.to_f >= 8)
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-high-importance\" title=\"#{t.score}\">\\1</b>")
+      elsif (t.score.to_f.between?(2,8))
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-mid-importance\" title=\"#{t.score}\">\\1</b>")
+      else
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-low-importance\" title=\"#{t.score}\">\\1</b>")
+      end
+
+    end
+    "#{text}"
+  end
 
   def convertToArr(mailtofromcc)
     tArr = Array.new

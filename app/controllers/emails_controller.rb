@@ -1,3 +1,5 @@
+require 'csv'
+
 class EmailsController < ApplicationController
   before_action :set_email, only: [:show, :edit, :update, :destroy, :vote]
 
@@ -6,14 +8,13 @@ class EmailsController < ApplicationController
   # GET /emails
   # GET /emails.json
   def index
-
-    @emails = Email.all
-    @emails = Email.paginate(:page => params[:page])
+    @emails = Email.where("category=?", current_user.id%2).paginate(:page => params[:page])
   end
 
   # GET /emails/1
   # GET /emails/1.json
   def show
+    TRACKER.track(current_user['email'], "READ_EMAIL", {"email_id" => @email.id, "email_reference" => @email.reference_id})
   end
 
   # GET /emails/new
@@ -86,16 +87,31 @@ class EmailsController < ApplicationController
 
   def upvote
     @email = Email.find(params[:id])
+
+    if current_user.voted_down_on? @email
+      TRACKER.track(current_user['email'], "CHANGED_TO_UPVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    else
+      TRACKER.track(current_user['email'], "UPVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    end
+
     @email.liked_by current_user
-    #TRACKER.track(current_user['email'], "email_UPVOTE")
     redirect_to emails_path
 
   end
 
   def downvote
     @email = Email.find(params[:id])
+
+    if current_user.voted_up_on? @email
+      TRACKER.track(current_user['email'], "CHANGED_TO_DOWNVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    else
+      TRACKER.track(current_user['email'], "DOWNVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    end
+
+
     @email.downvote_from current_user
-    #TRACKER.track(current_user['email'], "email_DOWNVOTE")
+
+
     redirect_to emails_path
     #redirect_to @email
   end
@@ -168,7 +184,7 @@ class EmailsController < ApplicationController
       end
     end
 
-    output
+    highlight_terms(output)
 
   end
   helper_method :readfile
@@ -176,23 +192,44 @@ class EmailsController < ApplicationController
 
   def highlight_terms(text)
     words = {}
-    Termscore.all.each do |t|
+    #Termscore.all.each do |t|
+    Termscore.where("score>=1").each do |t|
       words[t.term] = t.score
 
-      text.sub!(/#{t.term}/, "--#{t.term}--")
+      #text.sub!(/#{t.term}/, "<code class=\"mytooltip\" title=\"#{t.score}\"><u>#{t.term}</u></code>")
+
+
+      if (t.score.to_f >= 8)
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-high-importance\" title=\"#{t.score}\">\\1</b>")
+      elsif (t.score.to_f.between?(2,8))
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-mid-importance\" title=\"#{t.score}\">\\1</b>")
+      else
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-low-importance\" title=\"#{t.score}\">\\1</b>")
+      end
 
     end
-    text
-
-
+    "#{text}"
   end
 
   def gethistory
-    data = [[1137111000,0.7695],[1137211000,0.7648],[1137311000,0.7648], [1137311000,0.7645], [1137411000,0.7638], [1137511000,0.7549], [1137611000,0.7562],[1137711000,0.7574], [1137811000,0.7543],[1137911000,0.7510],[1437316064, 0.7574] ]
-    #data.to_json
+    data = []
+    CSV.foreach("public/assets/dateScores.csv") do |r|
+      a,b = r
+      data << [a.to_i, b.to_f]
+    end
+
     ActiveSupport::JSON.encode(data)
   end
   helper_method :gethistory
+
+  def getdate
+    content = @email.content
+    mail = Mail.read_from_string(content)
+
+    mail.date.strftime('%Q')
+
+  end
+  helper_method :getdate
 
 
 

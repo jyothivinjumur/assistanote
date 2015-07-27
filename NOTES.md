@@ -1,3 +1,6 @@
+
+### Migrations
+```
 rails generate model prnode pgid:integer:index pgnodename:string:index pgscore:decimal
 
 rails generate model termscore term:string:index score:decimal
@@ -8,7 +11,14 @@ rails g migration pgscore_type_in_prnode
 
 rails g controller prnode new create
 
+bundle exec rails g migration ChangeTermScorePrecision
 
+bundle exec rails g migration AddUserType
+
+```
+
+### Some random stuff
+```
 ############################
 # 1. read from,to,cc into arrays
     # 2. figure out how to query the prnodes table  
@@ -40,15 +50,19 @@ rails g controller prnode new create
   </div> -->
 
   #####################################
+```
 
-  # relating relations table with email
-  # run the following command 
+
+### Relating relations table with email
+```
+# run the following command
 update relations r
 join emails e on r.email = e.reference_id
 set r.email_id = e.id;
+```
 
-
-## clean files
+### Clean files
+```
 files = `ls p/*`
 files = files.gsub!("p/","")
 files = files.split("\n")
@@ -63,16 +77,19 @@ files.each do |f|
     attachement.write("#{f}\n")
   end
 end
+```
 
-## Joining attachements with emails
+### Joining attachements with emails
+```
 UPDATE attachments a
 JOIN emails e ON SUBSTRING_INDEX( a.reference_id , '.', 3 ) = SUBSTRING_INDEX( e.reference_id , '.', 3 )
 SET a.email_id = e.id
-    
+```
 
-# colors dont show up on Heroku, which requires a special step
+### Colors dont show up on Heroku, which requires a special step
+```
 bundle exec rake assets:precompile
 git add .
 git commit -a
 git push
-    
+```
