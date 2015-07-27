@@ -1,15 +1,11 @@
 <%- model_class = Email -%>
 
 
+
 <ul class="nav nav-tabs">
   <li role="presentation"><a href="<%= emails_path %>">Home</a></li>
   <li role="presentation" class="active"><a href="#"> <%= @email.reference_id.sub(".txt","") %>  </a></li>
 
-      <!--<li><a href="#">Something else here</a></li>-->
-      <!--<li role="separator" class="divider"></li>-->
-      <!--<li><a href="#">Separated link</a></li>-->
-      <!--<li role="separator" class="divider"></li>-->
-      <!--<li><a href="#">One more separated link</a></li>-->
 
       <% if @email.attachments.count > 0 %>
       <li class="dropdown">
@@ -59,45 +55,43 @@
 </ul>
 
 
-<div class="container">
-  <div class="row">
-    <div >
-        <div class="fieldset">
+
+<% if current_user["user_type"] == "RECIPIENT" %>
+
+    <div class="container">
+      <div class="row">
+        <div >
+          <div class="fieldset">
             <div class="email-text">
-                <%=  readfile.html_safe %>
+              <%=  readfile.html_safe %>
             </div>
+          </div>
         </div>
-    </div>
 
 
         <div class='row-fluid'>
-            <div class=" panel" id="graphContainer" data-series="<%= gethistory %>"
-                 data-dt="<%= getdate %>" style="min-width: 310px; height: 300px; margin: 0 auto" >
-            </div>
-          <!--<div class="col-md-2 panel">-->
-            <!--<table>-->
-              <!--<% if @email.attachments.count > 0 %>-->
-                  <!--<% counter = 1 %>-->
-                  <!--<% @email.attachments.each do |attachment| %>-->
-                      <!--<tr><td>-->
-                        <!--<%= image_tag "attachment.png", size: "20x20", alt: "attachment" %>-->
-                        <!--<%= link_to attachment_path(attachment), :class => 'btn btn-default' do %>-->
-                            <!--<%= "Attachment-#{counter}" %>-->
-                            <!--<% counter = counter+1 %>-->
-                        <!--<%- end -%>-->
-                      <!--</td>-->
-                      <!--</tr>-->
-                  <!--<% end %>-->
-              <!--<% end %>-->
-            <!--</table>-->
-          <!--</div>-->
+          <div class=" panel" id="graphContainer" data-series="<%= gethistory %>"
+               data-dt="<%= getdate %>" style="min-width: 310px; height: 300px; margin: 0 auto" >
+          </div>
+
         </div>
-  </div>
-  <div text-align="center"> * The above graph plots Privilege propensity </div>
-</div>
+      </div>
+      <div text-align="center"> * The above graph plots Privilege propensity </div>
+    </div>
 
-
-
+<% else %>
+    <div class="container">
+      <div class="row">
+        <div >
+          <div class=".fieldset_attachement">
+            <div class="email-text">
+              <%=  @email.content.gsub(/\n/, '<br/>').html_safe %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
 
 
 

@@ -14,6 +14,7 @@ class EmailsController < ApplicationController
   # GET /emails/1
   # GET /emails/1.json
   def show
+    TRACKER.track(current_user['email'], "READ_EMAIL", {"email_id" => @email.id, "email_reference" => @email.reference_id})
   end
 
   # GET /emails/new
@@ -86,16 +87,31 @@ class EmailsController < ApplicationController
 
   def upvote
     @email = Email.find(params[:id])
+
+    if current_user.voted_down_on? @email
+      TRACKER.track(current_user['email'], "CHANGED_TO_UPVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    else
+      TRACKER.track(current_user['email'], "UPVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    end
+
     @email.liked_by current_user
-    #TRACKER.track(current_user['email'], "email_UPVOTE")
     redirect_to emails_path
 
   end
 
   def downvote
     @email = Email.find(params[:id])
+
+    if current_user.voted_up_on? @email
+      TRACKER.track(current_user['email'], "CHANGED_TO_DOWNVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    else
+      TRACKER.track(current_user['email'], "DOWNVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    end
+
+
     @email.downvote_from current_user
-    #TRACKER.track(current_user['email'], "email_DOWNVOTE")
+
+
     redirect_to emails_path
     #redirect_to @email
   end
