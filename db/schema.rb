@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20150726131103) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "relative_rank", precision: 10, scale: 2
+    t.string   "Role"
   end
 
   add_index "prnodes", ["pgid"], name: "index_prnodes_on_pgid", using: :btree

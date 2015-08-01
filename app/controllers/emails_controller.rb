@@ -165,21 +165,23 @@ class EmailsController < ApplicationController
       referenced_nodes = relations.recipient.split(",") << relations.node   
       # Get all nodes and their associated scores
       referenced_nodes_scores =  getscore(referenced_nodes)
+      referenced_nodes_roles =  getnoderole(referenced_nodes)
 
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
+        roleInfo=find_role(person,referenced_nodes_roles)
 
-
-        if (score2.to_f >= 0.5)
-          output = output.gsub(person, "<code class=\"mytooltip my-code-50orhigher\" title=\"#{score2}\">#{person}</code>")
-        elsif (score2.to_f.between?(0.2,0.5))
-          output = output.gsub(person, "<code class=\"mytooltip my-code-20to50\" title=\"#{score2}\">#{person}</code>")
+        if (score2.to_f >= 0.7)
+          output = output.gsub(person, "<code class=\"mytooltip my-code-80orhigher\" title=\"#{roleInfo}\">#{person}</code>")
+        elsif (score2.to_f.between?(0.3,0.7))
+          output = output.gsub(person, "<code class=\"mytooltip my-code-50to80\" title=\"#{roleInfo}\">#{person}</code>")
+        elsif (score2.to_f.between?(0.1,0.3))
+          output = output.gsub(person, "<code class=\"mytooltip my-code-20to50\" title=\"#{roleInfo}\">#{person}</code>")
         else
-          output = output.gsub(person, "<code class=\"mytooltip my-code-20less\" title=\"#{score2}\">#{person}</code>")
+          output = output.gsub(person, "<code class=\"mytooltip my-code-20less\" title=\"#{roleInfo}\">#{person}</code>")
         end
 
-
-        output = output.gsub("\r\n", "<br />")
+        output = output.gsub("\n", "<br />")
 
       end
     end
@@ -199,14 +201,16 @@ class EmailsController < ApplicationController
       #text.sub!(/#{t.term}/, "<code class=\"mytooltip\" title=\"#{t.score}\"><u>#{t.term}</u></code>")
 
 
-      if (t.score.to_f >= 8)
+      if (t.score.to_f >= 6)
         text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-high-importance\" title=\"#{t.score}\">\\1</b>")
-      elsif (t.score.to_f.between?(2,8))
+      elsif (t.score.to_f.between?(2,6))
         text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-mid-importance\" title=\"#{t.score}\">\\1</b>")
-      else
+      elsif (t.score.to_f.between?(1,2))
         text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-low-importance\" title=\"#{t.score}\">\\1</b>")
+      else
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-neg-importance\" title=\"#{t.score}\">\\1</b>")
+        # text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b  title=\"#{t.score}\">\\1</b>")
       end
-
     end
     "#{text}"
   end
@@ -297,12 +301,38 @@ class EmailsController < ApplicationController
 
   end
 
+  def find_role(node, referenced_nodes_roles)
+    role = ''
+    allnodes = []
+    referenced_nodes_roles.each do |email, role|
+      allnodes << email
+    end
+    match = FuzzyMatch.new(allnodes).find(node)
+
+    if match.nil?
+      role = 'No Information'
+    else
+      role = referenced_nodes_roles["#{match}"]
+    end
+
+    # "===========> [#{node}]" + " [#{match}:#{score}] \n"
+    role.to_s
+  end
+
   def getscore(ids)
     scores = Hash.new
     ids.each do |id|
       scores["#{Prnode.find_by_pgid(id.to_i).pgnodename}"] = Prnode.find_by_pgid(id.to_i).relative_rank
     end
     scores
+  end
+
+  def getnoderole(ids)
+    roles = Hash.new
+    ids.each do |id|
+      roles["#{Prnode.find_by_pgid(id.to_i).pgnodename}"] = Prnode.find_by_pgid(id.to_i).Role
+    end
+    roles
   end
 
   def getscorefornode(node)

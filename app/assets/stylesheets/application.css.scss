@@ -87,20 +87,28 @@ legend {
   border-radius: 4px;
 }
 
-.my-code-50orhigher {
+.my-code-80orhigher {
   padding: 2px 4px;
   font-size: 90%;
   color: #000000;
-  background-color: #E63E00;
+  background-color: #990000;
   border-radius: 4px;
   font-weight: bold;
+}
+
+.my-code-50to80 {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #000000;
+  background-color: #CC0000;
+  border-radius: 4px;
 }
 
 .my-code-20to50 {
   padding: 2px 4px;
   font-size: 90%;
   color: #000000;
-  background-color: #FF6A33;
+  background-color: #FF6666;
   border-radius: 4px;
 }
 
@@ -470,23 +478,30 @@ legend {
 }
 
 // New colors for text highlighting
+.text-neg-importance {
+  //padding: 2px 4px;
+  font-size: 90%;
+  color: #006600;
+  //border-radius: 4px;
+}
+
 .text-low-importance {
   //padding: 2px 4px;
   font-size: 90%;
-  color: #296614;
+  color: #FF6666;
   //border-radius: 4px;
 }
 
 .text-mid-importance {
   //padding: 2px 4px;
   font-size: 90%;
-  color: #FF6A33;
+  color: #FF0000;
   //border-radius: 4px;
 }
 
 .text-high-importance {
   //padding: 2px 4px;
   font-size: 90%;
-  color: #E63E00;
+  color: #990000;
   //border-radius: 4px;
 }
