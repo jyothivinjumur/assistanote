@@ -125,3 +125,15 @@ end
 ```
 rails generate model event user:string:index action:string email_id:integer email_reference:string
 ```
+
+### Upload mysql database to RDS
+```
+mysqldump -u root -psati anotassist_dev --single-transaction --compress --order-by-primary > out
+mysql -u jyothikv -h usrstudychiir.cretdhxh87bc.us-west-2.rds.amazonaws.com -p4483Kempu anotassist_pilot < out
+
+
+
+heroku config:set DATABASE_URL='mysql://jyothikv:4483Kempu@usrstudychiir.cretdhxh87bc.us-west-2.rds.amazonaws.com/anotassist_pilot?reconnect=true'
+
+
+```
