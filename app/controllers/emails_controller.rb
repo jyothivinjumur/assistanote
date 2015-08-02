@@ -176,9 +176,9 @@ class EmailsController < ApplicationController
         elsif (score2.to_f.between?(0.3,0.7))
           output = output.gsub(person, "<code class=\"mytooltip my-code-50to80\" title=\"#{roleInfo}\">#{person}</code>")
         elsif (score2.to_f.between?(0.1,0.3))
-          output = output.gsub(person, "<code class=\"mytooltip my-code-20to50\" title=\"#{roleInfo}\">#{person}</code>")
-        else
           output = output.gsub(person, "<code class=\"mytooltip my-code-20less\" title=\"#{roleInfo}\">#{person}</code>")
+        else
+          output = output.gsub(person, "<code class=\"mytooltip my-code-default\" title=\"#{roleInfo}\">#{person}</code>")
         end
 
         output = output.gsub("\n", "<br />")

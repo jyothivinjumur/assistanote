@@ -82,35 +82,38 @@ legend {
 .my-code-20less {
   padding: 2px 4px;
   font-size: 90%;
-  color: #000000;
-  background-color: #FFC7B2;
+  color: #FFFFFF;
+  background-color: #FF3333;
+  border-radius: 4px;
+}
+
+.my-code-50to80 {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #FFFFFF;
+  background-color: #FF0000;
   border-radius: 4px;
 }
 
 .my-code-80orhigher {
   padding: 2px 4px;
   font-size: 90%;
-  color: #000000;
-  background-color: #990000;
+  color: #FFFFFF;
+  background-color: #FF0000;
   border-radius: 4px;
   font-weight: bold;
 }
 
-.my-code-50to80 {
+.my-code-default {
   padding: 2px 4px;
   font-size: 90%;
   color: #000000;
-  background-color: #CC0000;
+  font-color: #000000;
   border-radius: 4px;
+  border-color:#FFCCCC;
+  background-color: #FFE5CC;
 }
 
-.my-code-20to50 {
-  padding: 2px 4px;
-  font-size: 90%;
-  color: #000000;
-  background-color: #FF6666;
-  border-radius: 4px;
-}
 
 .btn-primary {
   color: white;

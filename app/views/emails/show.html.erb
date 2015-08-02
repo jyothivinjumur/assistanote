@@ -2,7 +2,7 @@
 
 
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" >
   <li role="presentation"><a href="<%= emails_path %>">Home</a></li>
   <li role="presentation" class="active"><a href="#"> <%= @email.reference_id.sub(".txt","") %>  </a></li>
 
@@ -18,7 +18,7 @@
           <% counter = 1 %>
           <% @email.attachments.each do |attachment| %>
               <li>
-                <%= link_to attachment_path(attachment), :class => 'btn btn-default' do %>
+                <%= link_to attachment_path(attachment), :class =>  'btn btn-default' do %>
                     <%= "Attachment-#{counter}" %>
                     <% counter = counter+1 %>
                 <%- end -%>
@@ -28,27 +28,30 @@
       </li>
       <% end %>
 
-
-
-
-  <div class="btn-group" role="group" aria-label="...">
-    <div class="btn-group" role="group">
+  <div class="btn-group" role="group" aria-label="..." style="width:90%;" >
+    <div class="btn-group" role="group" style="margin: 1%; " >
       <!--<button type="button" class="btn btn-default">Left</button>-->
       <% if current_user.voted_up_on? @email %>
         <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-danger"%>
       <% else %>
-          <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-default"%>
+          <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-primary"%>
       <% end %>
     </div>
-    <div class="btn-group" role="group">
 
+    <div class="btn-group" role="group" style="margin: 1%; ">
       <% if current_user.voted_down_on? @email %>
           <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-success "%>
       <% else %>
-          <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-default "%>
+          <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-primary "%>
       <% end %>
-
-
+    </div>
+    <div class="btn-group" role="group" style="margin: 1%; ">
+      <!--<button type="button" class="btn btn-default">Left</button>-->
+      <% if current_user.voted_up_on? @email %>
+        <%= button_to " No Decision ", like_email_path(@email), :class => "btn btn-warning"%>
+      <% else %>
+          <%= button_to " No Decision ", like_email_path(@email), :class => "btn btn-primary"%>
+      <% end %>
     </div>
   </div>
 
