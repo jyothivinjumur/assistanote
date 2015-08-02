@@ -10,7 +10,8 @@ class AttachmentsController < ApplicationController
   # GET /attachments/1
   # GET /attachments/1.json
   def show
-    TRACKER.track(current_user['email'], "READ_ATTACHMENT", {"email_id" => @attachment.email.id, "email_reference" => @attachment.email.reference_id})
+    #TRACKER.track(current_user['email'], "READ_ATTACHMENT", {"email_id" => @attachment.email.id, "email_reference" => @attachment.email.reference_id})
+    TRACKER.track(current_user['email'], "READ_ATTACHMENT", @attachment.email.id, @attachment.email.reference_id)
   end
 
   # GET /attachments/new

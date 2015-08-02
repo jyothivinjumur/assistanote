@@ -1,51 +1,4 @@
 $(function () {
-    console.log($('#graphContainer').data('series'))
-});
-
-//$(function () {
-//    //$.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=usdeur.json&callback=?', function (data) {
-//        //console.log(data)
-//
-//        // Create the chart
-//        $('#graphContainer').highcharts('StockChart', {
-//
-//
-//            rangeSelector : {
-//                selected : 0
-//            },
-//
-//            title : {
-//                text : 'USD to EUR exchange rate'
-//            },
-//
-//            tooltip: {
-//                style: {
-//                    width: '200px'
-//                },
-//                valueDecimals: 4,
-//                shared : true
-//            },
-//
-//            yAxis : {
-//                title : {
-//                    text : 'Exchange rate'
-//                }
-//            },
-//
-//            series : [{
-//                name : 'USD to EUR',
-//                data : $('#graphContainer').data('series'),
-//                id : 'dataseries'
-//
-//                // the event marker flags
-//            }]
-//        });
-//    //});
-//});
-
-$(function () {
-//    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=usdeur.json&callback=?', function (data) {
-
         // Create the chart
         $('#graphContainer').highcharts('StockChart', {
 
@@ -82,21 +35,29 @@ $(function () {
             },
 
             series : [{
-                name : 'Privilege propensity',
+                name : '',
                 data : $('#graphContainer').data('series'),
-                id : 'dataseries'
+                id : 'dataseries',
+                lineWidth : 0,
+                marker : {
+                    enabled : true,
+                    radius : 2
+                },
+                tooltip: {
+                    valueDecimals: 2
+                }
 
                 // the event marker flags
             }, {
                 type : 'flags',
                 data : [{
                     x : $('#graphContainer').data('dt'),
-                    title : 'Current date',
+                    title : '•',
                     text : 'Date on which displayed email was sent'
                 }],
                 onSeries : 'dataseries',
-                shape : 'squarepin',
-                width : 70
+                shape : 'circlepin',
+                width : 20
             }]
         });
     //});

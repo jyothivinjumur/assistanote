@@ -91,6 +91,7 @@ end
     member do
       post "like", to: "emails#upvote"
       post "dislike", to: "emails#downvote"
+      post "dontknow", to: "emails#no_decision"
     end
   end
 

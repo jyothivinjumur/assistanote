@@ -226,6 +226,3 @@ DEPENDENCIES
   unicorn
   validates_formatting_of
   will_paginate (~> 3.0)
-
-BUNDLED WITH
-   1.10.5

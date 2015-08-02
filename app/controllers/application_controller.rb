@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   protected
 
   # mixpanel tracking
-  TRACKER = Mixpanel::Tracker.new("1b32058342e0f05fc3421a7aae5cbdab")
+  TRACKER = ApplicationHelper::EventTracker.new #Mixpanel::Tracker.new("") # 1b32058342e0f05fc3421a7aae5cbdab
 
   #->Prelang (user_login:devise)
   def configure_permitted_parameters
@@ -18,15 +18,27 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
-  #def authenticate_user!
-  #  if user_signed_in?
-  #    super
-  #  else
-  #    redirect_to login_path, :notice => 'if you want to add a notice'
-  #    ## if you want render 404 page
-  #    ## render :file => File.join(Rails.root, 'public/404'), :formats => [:html], :status => 404, :layout => false
-  #  end
-  #end
+  # returns one status [novote, dontknow, privilege, notprivilege]
+  def get_vote_status(user, email)
+    status = ""
+    if user.voted_for? email
+      if current_user.voted_down_on? email
+        weight = Vote.where(votable_id: email.id, voter_id: user.id).first[:vote_weight]
+        if weight == 2
+          status = "dontknow"
+        else
+          status = "notprivilege"
+        end
+      elsif current_user.voted_up_on? email, :vote_weight => 1
+        status = "privilege"
+      end
+    else
+      status = "novote"
+    end
+
+    status
+  end
+  helper_method :get_vote_status
 
   private
 

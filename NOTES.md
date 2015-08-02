@@ -15,6 +15,8 @@ bundle exec rails g migration ChangeTermScorePrecision
 
 bundle exec rails g migration AddUserType
 
+bundle exec rails g migration AddEmailSubject
+
 ```
 
 ### Some random stuff
@@ -92,4 +94,34 @@ bundle exec rake assets:precompile
 git add .
 git commit -a
 git push
+```
+
+### Add subject to every email in the database
+1. On rails console
+```
+bundle exec rails g migration AddEmailSubject
+rake db:migrate
+
+```
+2. Use ruby script to update
+```
+require 'sequel'
+require 'mysql'
+require 'mail'
+
+DB = Sequel.connect('mysql://root:sati@localhost:3306/anotassist_dev')
+emails = DB[:emails]
+
+emails.each do |email|
+  subject = Mail.read_from_string(email[:content]).subject
+  p subject
+  unless subject.nil?
+    emails.where('id = ?', email[:id]).update(:subject => "#{subject[0..254]}")
+  end
+end
+```
+
+### Add mysql based tracking
+```
+rails generate model event user:string:index action:string email_id:integer email_reference:string
 ```
