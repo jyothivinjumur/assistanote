@@ -142,3 +142,20 @@ Username: jyothi-ruby
 Access Key ID: AKIAJHULJUXXKVUTSIWA
 Secret Access Key: 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
 ```
+
+### Setup and deploy to EBS
+```
+# set SECRET_KEY_BASE
+eb setenv SECRET_KEY_BASE=213124afasfar24r2213124134sac##@#r
+# inspect local settings
+eb printenv
+
+# redeploy
+eb deploy
+
+# see website
+eb open
+
+# see logs
+eb logs
+```

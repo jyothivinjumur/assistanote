@@ -1,0 +1,11 @@
+branch-defaults:
+  master:
+    environment:  assistanote-env
+global:
+  application_name: My First Elastic Beanstalk Application
+  default_ec2_keyname: null
+  default_platform: 64bit Amazon Linux 2015.03 v1.4.3 running Ruby 2.2 (Passenger
+    Standalone)
+  default_region: us-west-2
+  profile: eb-cli
+  sc: git
