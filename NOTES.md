@@ -134,6 +134,11 @@ mysql -u jyothikv -h usrstudychiir.cretdhxh87bc.us-west-2.rds.amazonaws.com -p44
 
 
 heroku config:set DATABASE_URL='mysql://jyothikv:4483Kempu@usrstudychiir.cretdhxh87bc.us-west-2.rds.amazonaws.com/anotassist_pilot?reconnect=true'
+```
 
-
+### AWS creds
+```
+Username: jyothi-ruby
+Access Key ID: AKIAJHULJUXXKVUTSIWA
+Secret Access Key: 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
 ```
