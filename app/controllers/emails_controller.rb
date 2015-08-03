@@ -14,7 +14,8 @@ class EmailsController < ApplicationController
   # GET /emails/1
   # GET /emails/1.json
   def show
-    TRACKER.track(current_user['email'], "READ_EMAIL", {"email_id" => @email.id, "email_reference" => @email.reference_id})
+    #TRACKER.track(current_user['email'], "READ_EMAIL", {"email_id" => @email.id, "email_reference" => @email.reference_id})
+    TRACKER.track(current_user['email'], "READ_EMAIL", @email.id, @email.reference_id)
   end
 
   # GET /emails/new
@@ -88,10 +89,10 @@ class EmailsController < ApplicationController
   def upvote
     @email = Email.find(params[:id])
 
-    if current_user.voted_down_on? @email
-      TRACKER.track(current_user['email'], "CHANGED_TO_UPVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
-    else
-      TRACKER.track(current_user['email'], "UPVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    if ["notprivilege", "dontknow"].include? get_vote_status(current_user, @email)
+      TRACKER.track(current_user['email'], "CHANGED_TO_UPVOTE", @email.id, @email.reference_id)
+    elsif ["novote"].include? get_vote_status(current_user, @email)
+      TRACKER.track(current_user['email'], "UPVOTE", @email.id, @email.reference_id)
     end
 
     @email.liked_by current_user
@@ -102,19 +103,31 @@ class EmailsController < ApplicationController
   def downvote
     @email = Email.find(params[:id])
 
-    if current_user.voted_up_on? @email
-      TRACKER.track(current_user['email'], "CHANGED_TO_DOWNVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
-    else
-      TRACKER.track(current_user['email'], "DOWNVOTE",{"email_id" => @email.id, "email_reference" => @email.reference_id})
+    if ["privilege", "dontknow"].include? get_vote_status(current_user, @email)
+      TRACKER.track(current_user['email'], "CHANGED_TO_DOWNVOTE", @email.id, @email.reference_id)
+    elsif ["novote"].include? get_vote_status(current_user, @email)
+      TRACKER.track(current_user['email'], "DOWNVOTE", @email.id, @email.reference_id)
     end
 
-
     @email.downvote_from current_user
-
-
     redirect_to emails_path
-    #redirect_to @email
   end
+
+
+  def no_decision
+    @email = Email.find(params[:id])
+
+    if ["privilege", "notprivilege"].include? get_vote_status(current_user, @email)
+      TRACKER.track(current_user['email'], "CHANGED_TO_DONTKNOW", @email.id, @email.reference_id)
+    elsif ["novote"].include? get_vote_status(current_user, @email)
+      TRACKER.track(current_user['email'], "DONTKNOW", @email.id, @email.reference_id)
+    end
+
+    @email.downvote_from current_user , :vote_weight => 2
+    redirect_to emails_path
+
+  end
+
 
   def hasvoted(email)
     email.votes_for.down.by_type(current_user).inspect
@@ -125,18 +138,6 @@ class EmailsController < ApplicationController
     #end
   end
   helper_method :hasvoted
-
-
-  def getblurb(content)
-    mail = Mail.read_from_string(content)
-    sender = "#{mail.from}"[0..30].gsub!(/[^0-9A-Za-z\.@]/, '')
-    subject = "#{mail.subject}"[0..90]
-
-    [sender, subject]
-
-
-  end
-  helper_method :getblurb
 
   def readfile
     #TRACKER.track(current_user['email'], "email_READ")
@@ -309,6 +310,8 @@ class EmailsController < ApplicationController
     end
     match = FuzzyMatch.new(allnodes).find(node)
 
+    puts match
+
     if match.nil?
       role = 'No Information'
     else
@@ -316,7 +319,7 @@ class EmailsController < ApplicationController
     end
 
     # "===========> [#{node}]" + " [#{match}:#{score}] \n"
-    role.to_s
+    role
   end
 
   def getscore(ids)

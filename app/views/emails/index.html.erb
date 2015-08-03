@@ -1,7 +1,15 @@
 <%- model_class = Email -%>
 
+
+
+
 <ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="<%= emails_path %>">Home</a></li>
+  <li role="presentation" class="active"><a href="<%= emails_path %>">
+    <%= image_tag "umdlogo.jpeg", width:"30%", height: "30%" %></a></li></a></li>
+  <li>
+
+
+  </li>
   <ul class="nav navbar-nav navbar-right">
     <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></li>
   </ul>
@@ -9,41 +17,48 @@
 
 <table class="table table-striped">
   <thead>
-    <tr>
-      <th>ID</th>
+    <tr class="general-content">
+      <!--<th>ID</th>-->
       <!--<th><%= model_class.human_attribute_name(:reference_id) %></th>-->
       <th>Email Reference Identifier</th>
       <th>Subject</th>
-      <th>Voted</th>      
+      <th>Decision</th>
+      <!--<th>status</th>-->
 
     </tr>
   </thead>
   <tbody>
     <% @emails.each do |email| %>
-      <tr>
-            <td><%= email.id %> </td>
+      <tr class="general-content">
+            <!--<td><%= email.id %> </td>-->
 
-            <% sender, subject = getblurb(email.content) %>
+            <% subject = email.subject.length > 81 ? "#{email.subject[0..80].downcase}..." : email.subject.downcase %>
 
             <td>
-              <%= link_to email_path(email), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+              <%= link_to email_path(email), :class => 'btn', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
                 <%= email.reference_id.sub(".txt","") %>
-                <!--<%= sender %>-->
+
               <%- end -%>
             </td>
             <td>
-              <%= link_to email_path(email), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+              <%= link_to email_path(email), :class => 'btn', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
               <%= subject %>
               <%- end -%>
             </td>
 
           
           <td>
-            <% if current_user.voted_for? email %>
-                <%= image_tag "tick.png", size: "20x20", alt: "attachment" %>
+            <% if  get_vote_status(current_user, email) == "privilege" %>
+                <%= image_tag "tick.jpeg", size: "20x20", alt: "attachment" %>
+            <% elsif  get_vote_status(current_user, email) == "notprivilege" %>
+                <%= image_tag "cross.png", size: "20x20", alt: "attachment" %>
+            <% elsif  get_vote_status(current_user, email) == "dontknow" %>
+                <%= image_tag "unknown.jpeg", size: "20x20", alt: "attachment" %>
 
             <%- end -%>
           </td>
+
+
 
 
       </tr>
@@ -53,15 +68,3 @@
 
 
     <%= will_paginate @emails %>
-
-<br />
-<div class="label label-default">Progress</div>
-<div class="bs-example">
-  <div class="progress">
-    <div class="progress-bar progress-bar-success" style="width: <%= (current_user.votes.count.to_f / Email.count) * 100%>%;">
-      <span class="sr-only">60% Complete</span>
-    </div>
-  </div>
-</div>
-
- <!---->

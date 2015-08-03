@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150726131103) do
+ActiveRecord::Schema.define(version: 20150802153022) do
 
   create_table "attachments", force: true do |t|
     t.string   "reference_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20150726131103) do
     t.datetime "updated_at"
     t.string   "category"
     t.text     "content"
+    t.string   "subject"
   end
 
   add_index "emails", ["category"], name: "index_emails_on_category", using: :btree
@@ -55,6 +56,17 @@ ActiveRecord::Schema.define(version: 20150726131103) do
 
   add_index "evaluations_users", ["evaluation_id"], name: "index_evaluations_users_on_evaluation_id", using: :btree
   add_index "evaluations_users", ["user_id"], name: "index_evaluations_users_on_user_id", using: :btree
+
+  create_table "events", force: true do |t|
+    t.string   "user"
+    t.string   "action"
+    t.integer  "email_id"
+    t.string   "email_reference"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events", ["user"], name: "index_events_on_user", using: :btree
 
   create_table "histories", force: true do |t|
     t.integer  "node"

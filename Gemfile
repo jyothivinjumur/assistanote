@@ -45,10 +45,10 @@ gem 'bundler'
 
 gem 'unicorn'
 
-gem 'acts_as_votable', github: 'ryanto/acts_as_votable'
-gem 'bootstrap-sass', github: 'twbs/bootstrap-sass'
+gem 'acts_as_votable' #, github: 'ryanto/acts_as_votable'
+gem 'bootstrap-sass' #, github: 'twbs/bootstrap-sass'
 gem 'bootstrap-sass-extras'
-gem 'devise', github: 'plataformatec/devise'
+gem 'devise'  #, github: 'plataformatec/devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'validates_formatting_of'
