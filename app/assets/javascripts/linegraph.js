@@ -52,12 +52,12 @@ $(function () {
                 type : 'flags',
                 data : [{
                     x : $('#graphContainer').data('dt'),
-                    title : '•',
+                    title : 'X',
                     text : 'Date on which displayed email was sent'
                 }],
                 onSeries : 'dataseries',
                 shape : 'circlepin',
-                width : 20
+                width : 15
             }]
         });
     //});
