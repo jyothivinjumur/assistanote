@@ -85,7 +85,7 @@ end
 ```
 UPDATE attachments a
 JOIN emails e ON SUBSTRING_INDEX( a.reference_id , '.', 3 ) = SUBSTRING_INDEX( e.reference_id , '.', 3 )
-SET a.email_id = e.id
+SET a.email_id = e.id;
 ```
 
 ### Colors dont show up on Heroku, which requires a special step
@@ -109,7 +109,7 @@ require 'sequel'
 require 'mysql'
 require 'mail'
 
-DB = Sequel.connect('mysql://root:sati@localhost:3306/anotassist_dev')
+DB = Sequel.connect('mysql://root:@localhost:3306/anotassist_dev')
 emails = DB[:emails]
 
 emails.each do |email|

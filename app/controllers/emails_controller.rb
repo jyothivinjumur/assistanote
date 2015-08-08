@@ -9,6 +9,7 @@ class EmailsController < ApplicationController
   # GET /emails.json
   def index
     @emails = Email.where("category=?", current_user.id%2).paginate(:page => params[:page])
+    # @emails = Email.where("category=?", current_user.id%2)
   end
 
   # GET /emails/1
@@ -171,12 +172,13 @@ class EmailsController < ApplicationController
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
         roleInfo=find_role(person,referenced_nodes_roles)
+        puts roleInfo
 
         if (score2.to_f >= 0.7)
           output = output.gsub(person, "<code class=\"mytooltip my-code-80orhigher\" title=\"#{roleInfo}\">#{person}</code>")
-        elsif (score2.to_f.between?(0.3,0.7))
+        elsif (score2.to_f.between?(0.2,0.7))
           output = output.gsub(person, "<code class=\"mytooltip my-code-50to80\" title=\"#{roleInfo}\">#{person}</code>")
-        elsif (score2.to_f.between?(0.1,0.3))
+        elsif (score2.to_f.between?(0.1,0.2))
           output = output.gsub(person, "<code class=\"mytooltip my-code-20less\" title=\"#{roleInfo}\">#{person}</code>")
         else
           output = output.gsub(person, "<code class=\"mytooltip my-code-default\" title=\"#{roleInfo}\">#{person}</code>")
@@ -203,13 +205,13 @@ class EmailsController < ApplicationController
 
 
       if (t.score.to_f >= 6)
-        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-high-importance\" title=\"#{t.score}\">\\1</b>")
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-high-importance\" >\\1</b>")
       elsif (t.score.to_f.between?(2,6))
-        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-mid-importance\" title=\"#{t.score}\">\\1</b>")
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-mid-importance\" >\\1</b>")
       elsif (t.score.to_f.between?(1,2))
-        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-low-importance\" title=\"#{t.score}\">\\1</b>")
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-low-importance\" >\\1</b>")
       else
-        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-neg-importance\" title=\"#{t.score}\">\\1</b>")
+        text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b class=\"text-neg-importance\">\\1</b>")
         # text.gsub!(/([\s\.\,\;]#{t.term}[\s\.\,\;])/i, "<b  title=\"#{t.score}\">\\1</b>")
       end
     end
@@ -218,7 +220,7 @@ class EmailsController < ApplicationController
 
   def gethistory
     data = []
-    CSV.foreach("public/assets/dateScores.csv") do |r|
+    CSV.foreach("public/assets/DatePropensityScores.csv") do |r|
       a,b = r
       data << [a.to_i, b.to_f]
     end
@@ -304,21 +306,14 @@ class EmailsController < ApplicationController
 
   def find_role(node, referenced_nodes_roles)
     role = ''
+    puts node
     allnodes = []
     referenced_nodes_roles.each do |email, role|
       allnodes << email
-    end
+    end   
     match = FuzzyMatch.new(allnodes).find(node)
-
     puts match
-
-    if match.nil?
-      role = 'No Information'
-    else
-      role = referenced_nodes_roles["#{match}"]
-    end
-
-    # "===========> [#{node}]" + " [#{match}:#{score}] \n"
+    role = referenced_nodes_roles["#{match}"]
     role
   end
 

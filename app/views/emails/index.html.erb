@@ -18,28 +18,26 @@
 <table class="table table-striped">
   <thead>
     <tr class="general-content">
-      <!--<th>ID</th>-->
+      <th>ID</th>
       <!--<th><%= model_class.human_attribute_name(:reference_id) %></th>-->
-      <th>Email Reference Identifier</th>
+      <!-- <th>Email Reference Identifier</th> -->
       <th>Subject</th>
       <th>Decision</th>
       <!--<th>status</th>-->
-
+<!--  -->
     </tr>
   </thead>
   <tbody>
+    <% id_counter = 0 %>
     <% @emails.each do |email| %>
+      <% id_counter = id_counter + 1 %>
       <tr class="general-content">
-            <!--<td><%= email.id %> </td>-->
+            <td><%= id_counter %> </td>
+            <% subject = email.subject %>
 
-            <% subject = email.subject.length > 81 ? "#{email.subject[0..80].downcase}..." : email.subject.downcase %>
+            
 
-            <td>
-              <%= link_to email_path(email), :class => 'btn', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
-                <%= email.reference_id.sub(".txt","") %>
-
-              <%- end -%>
-            </td>
+          
             <td>
               <%= link_to email_path(email), :class => 'btn', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
               <%= subject %>
@@ -49,9 +47,9 @@
           
           <td>
             <% if  get_vote_status(current_user, email) == "privilege" %>
-                <%= image_tag "tick.jpeg", size: "20x20", alt: "attachment" %>
+                <%= image_tag "pIndicator.jpeg", size: "20x20", alt: "attachment" %>
             <% elsif  get_vote_status(current_user, email) == "notprivilege" %>
-                <%= image_tag "cross.png", size: "20x20", alt: "attachment" %>
+                <%= image_tag "antipIndicator.jpeg", size: "20x20", alt: "attachment" %>
             <% elsif  get_vote_status(current_user, email) == "dontknow" %>
                 <%= image_tag "unknown.jpeg", size: "20x20", alt: "attachment" %>
 
@@ -67,4 +65,4 @@
 </table>
 
 
-    <%= will_paginate @emails %>
+  <%= will_paginate @emails %> 

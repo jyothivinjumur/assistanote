@@ -7,7 +7,7 @@ module ApplicationHelper
 
     def track(user, action, email_id, email_reference)
       @tracker.track(user, action,
-                     {"email_id" => email_id, "email_reference" => email_reference})
+                     {"email_id" => email_id, "email_reference" => email_reference, "user" => user})
       Event.create(user: user, action: action, email_id: email_id, email_reference: email_reference)
     end
 

@@ -1,64 +1,75 @@
 $(function () {
-        // Create the chart
-        $('#graphContainer').highcharts('StockChart', {
-
-            credits: {
-                enabled: false
-            },
-
-
-
-            rangeSelector : {
-                selected : 5
-            },
-
-            title : {
-                text : ''
-            },
-
-            tooltip: {
-                style: {
-                    width: '200px'
+    $('#graphContainer').highcharts({
+        chart: {
+            zoomType: 'x'
+        },
+        credits:{
+            enabled:false
+        },
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and Drag to Zoom in' : 'Pinch the chart to zoom in'
+        },
+        xAxis: {
+            type: 'datetime',
+            title: {
+                text: 'Date'
+            }
+        },
+        yAxis: {
+            gridLineWidth: 0,
+            title: {
+                text: 'Privilege Propensity'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
                 },
-                valueDecimals: 4,
-                shared : true
-            },
-
-            yAxis : {
-                title : {
-                    text : ''
-                }
-            },
-
-            xAxis: {
-                type: 'datetime'
-            },
-
-            series : [{
-                name : '',
-                data : $('#graphContainer').data('series'),
-                id : 'dataseries',
-                lineWidth : 0,
-                marker : {
-                    enabled : true,
-                    radius : 2
+                marker: {
+                    radius: 2
                 },
-                tooltip: {
-                    valueDecimals: 2
-                }
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
+            }
+        },
 
-                // the event marker flags
-            }, {
-                type : 'flags',
-                data : [{
-                    x : $('#graphContainer').data('dt'),
-                    title : 'X',
-                    text : 'Date on which displayed email was sent'
+        series: [{
+            type: 'area',
+            name: '',
+            data: $('#graphContainer').data('series')
+        },
+            {
+                type: 'flags',
+                data: [{
+                    x: $('#graphContainer').data('dt'),
+                    text: 'Date on which displayed email was sent',
+                    title: 'DISPLAYED EMAIL DATE'
+                    
                 }],
-                onSeries : 'dataseries',
-                shape : 'circlepin',
-                width : 15
+                width: 150,
+                showInLegend: true
             }]
-        });
-    //});
+    });
 });
