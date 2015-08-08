@@ -163,6 +163,8 @@ class EmailsController < ApplicationController
     output += "#{score} \n"    
     output += HTMLEntities.new.encode(content.force_encoding("UTF-8"))
 
+    output = highlight_terms(output)
+
     unless relations.nil? 
       referenced_nodes = relations.recipient.split(",") << relations.node   
       # Get all nodes and their associated scores
@@ -172,7 +174,8 @@ class EmailsController < ApplicationController
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
         roleInfo=find_role(person,referenced_nodes_roles)
-        puts roleInfo
+
+
 
         if (score2.to_f >= 0.7)
           output = output.gsub(person, "<code class=\"mytooltip my-code-80orhigher\" title=\"#{roleInfo}\">#{person}</code>")
@@ -189,7 +192,7 @@ class EmailsController < ApplicationController
       end
     end
 
-    highlight_terms(output)
+    output
 
   end
   helper_method :readfile
@@ -222,9 +225,8 @@ class EmailsController < ApplicationController
     data = []
     CSV.foreach("public/assets/DatePropensityScores.csv") do |r|
       a,b = r
-      data << [a.to_i, b.to_f]
+      data << [Time.at(a.to_i/1000).to_date.strftime('%Q').to_i, b.to_f]
     end
-
     ActiveSupport::JSON.encode(data)
   end
   helper_method :gethistory
@@ -306,13 +308,11 @@ class EmailsController < ApplicationController
 
   def find_role(node, referenced_nodes_roles)
     role = ''
-    puts node
     allnodes = []
     referenced_nodes_roles.each do |email, role|
       allnodes << email
     end   
     match = FuzzyMatch.new(allnodes).find(node)
-    puts match
     role = referenced_nodes_roles["#{match}"]
     role
   end

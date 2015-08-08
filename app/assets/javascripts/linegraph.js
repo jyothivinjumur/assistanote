@@ -1,4 +1,9 @@
 $(function () {
+
+    Highcharts.setOptions({
+        colors: ['#666666']
+    });
+
     $('#graphContainer').highcharts({
         chart: {
             zoomType: 'x'
@@ -15,9 +20,13 @@ $(function () {
         },
         xAxis: {
             type: 'datetime',
+            dateTimeLabelFormats: {
+                year: '%Y'
+            },
             title: {
                 text: 'Date'
-            }
+            },
+            tickInterval: 86400000
         },
         yAxis: {
             gridLineWidth: 0,
@@ -58,18 +67,22 @@ $(function () {
         series: [{
             type: 'area',
             name: '',
-            data: $('#graphContainer').data('series')
+            data: $('#graphContainer').data('series'),
+            tooltip: {
+                valueDecimals: 2
+            }
         },
-            {
-                type: 'flags',
-                data: [{
-                    x: $('#graphContainer').data('dt'),
-                    text: 'Date on which displayed email was sent',
-                    title: 'DISPLAYED EMAIL DATE'
-                    
-                }],
-                width: 150,
-                showInLegend: true
-            }]
+        {
+            type: 'flags',
+            data: [{
+                x: $('#graphContainer').data('dt'),
+                text: 'Date on which displayed email was sent',
+                title: 'DISPLAYED EMAIL DATE'
+
+            }],
+            width: 150,
+            showInLegend: true
+        }
+        ]
     });
 });
