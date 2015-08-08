@@ -171,11 +171,11 @@ class EmailsController < ApplicationController
       referenced_nodes_scores =  getscore(referenced_nodes)
       referenced_nodes_roles =  getnoderole(referenced_nodes)
 
+      output = highlight_terms(output)
+
       allPeople.each do |person|
         score2 = find_score(person, referenced_nodes_scores)
         roleInfo=find_role(person,referenced_nodes_roles)
-
-
 
         if (score2.to_f >= 0.7)
           output = output.gsub(person, "<code class=\"mytooltip my-code-80orhigher\" title=\"#{roleInfo}\">#{person}</code>")
@@ -184,7 +184,9 @@ class EmailsController < ApplicationController
         elsif (score2.to_f.between?(0.1,0.2))
           output = output.gsub(person, "<code class=\"mytooltip my-code-20less\" title=\"#{roleInfo}\">#{person}</code>")
         else
-          output = output.gsub(person, "<code class=\"mytooltip my-code-default\" title=\"#{roleInfo}\">#{person}</code>")
+          unless roleInfo == "No Information"
+            output = output.gsub(person, "<code class=\"mytooltip my-code-default\" title=\"#{roleInfo}\">#{person}</code>")
+          end
         end
 
         output = output.gsub("\n", "<br />")

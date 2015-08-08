@@ -1,7 +1,7 @@
 $(function () {
 
     Highcharts.setOptions({
-        colors: ['#666666']
+        colors: ['#404040']
     });
 
     $('#graphContainer').highcharts({
