@@ -2,7 +2,7 @@ module ApplicationHelper
 
   class EventTracker
     def initialize
-      @tracker = Mixpanel::Tracker.new("1b32058342e0f05fc3421a7aae5cbdab")
+      @tracker = Mixpanel::Tracker.new("52ea6d03703dfe892e0cb9e8eaf16cfb")
     end
 
     def track(user, action, email_id, email_reference)

@@ -177,9 +177,9 @@ class EmailsController < ApplicationController
         score2 = find_score(person, referenced_nodes_scores)
         roleInfo=find_role(person,referenced_nodes_roles)
 
-        if (score2.to_f >= 0.7)
+        if (score2.to_f >= 0.5)
           output = output.gsub(person, "<code class=\"mytooltip my-code-80orhigher\" title=\"#{roleInfo}\">#{person}</code>")
-        elsif (score2.to_f.between?(0.2,0.7))
+        elsif (score2.to_f.between?(0.2,0.5))
           output = output.gsub(person, "<code class=\"mytooltip my-code-50to80\" title=\"#{roleInfo}\">#{person}</code>")
         elsif (score2.to_f.between?(0.1,0.2))
           output = output.gsub(person, "<code class=\"mytooltip my-code-20less\" title=\"#{roleInfo}\">#{person}</code>")
