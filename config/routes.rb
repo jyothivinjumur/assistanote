@@ -87,6 +87,8 @@ end
     get 'sign-in' => "devise/sessions#new", :as => :login_path
   end
 
+  
+
   resources :emails do
     member do
       post "like", to: "emails#upvote"

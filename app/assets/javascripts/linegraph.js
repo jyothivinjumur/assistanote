@@ -31,7 +31,7 @@ $(function () {
         yAxis: {
             gridLineWidth: 0,
             title: {
-                text: 'Privilege Propensity'
+                text: 'Temporal Likelihood'
             }
         },
         legend: {

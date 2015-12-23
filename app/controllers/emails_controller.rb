@@ -140,6 +140,22 @@ class EmailsController < ApplicationController
   end
   helper_method :hasvoted
 
+
+  def getPeople
+    content = @email.content
+    mail = Mail.read_from_string(content)
+    toArray = convertToArr(mail.to)
+    fromArray = convertToArr(mail.from)
+    ccArray = convertToArr(mail.cc)     
+    # Get all senders and recipients of email in one array
+    allPeople = toArray + fromArray + ccArray
+    allPeople = allPeople.compact
+
+    allPeople
+  end
+  helper_method :getPeople
+
+
   def readfile
     #TRACKER.track(current_user['email'], "email_READ")
 
@@ -152,6 +168,8 @@ class EmailsController < ApplicationController
     # Get all senders and recipients of email in one array
     allPeople = toArray + fromArray + ccArray
     allPeople = allPeople.compact
+
+    puts allPeople
 
     score = ""
 

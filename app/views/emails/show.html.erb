@@ -1,17 +1,59 @@
 <%- model_class = Email -%>
 
-
+<script>
+jQuery(function($) {
+  var index=1
+  $('.addEntity').click(function () {
+    var table=document.getElementById("divEntTab");
+    for (var i = 0, row; row = table.rows[i];i++) {
+     
+      if((row.rowIndex) == 0){
+        var cell1=row.insertCell();
+        var t1=document.createElement("input");
+          t1.id = "txtName"+index;
+          t1.value="val"
+          cell1.appendChild(t1);
+      }
+      else if((row.rowIndex) == 1){
+        var cell2=row.insertCell();
+        var t2=document.createElement("input");
+          t2.id = "txtRole"+index;
+          cell2.appendChild(t2);
+      }
+      else if((row.rowIndex) == 2){  
+        var cell3=row.insertCell();  
+        var t3=document.createElement("input");
+          t3.id = "txtOrg"+index;
+          cell3.appendChild(t3);
+      }
+      else if((row.rowIndex) == 3){ 
+        var array = ["High","Average","Marginal"];  
+        var cell4=row.insertCell();
+        var t4=document.createElement("select");
+        t4.id = "sigValue"+index;
+        cell4.appendChild(t4);
+        //Create and append the options
+        for (var i = 0; i < array.length; i++) {
+            var option = document.createElement("option");
+            option.value = array[i];
+            option.text = array[i];
+            t4.appendChild(option);
+          }
+      }
+      else{}
+    }
+    index++;
+  });
+});
+</script>
 
 <ul class="nav nav-tabs" >
   <li role="presentation"><a href="<%= emails_path %>">
-    <%= image_tag "umdlogo.jpeg", width:"30%", height: "30%" %></a></li>
+    <%= image_tag "umdlogo.jpeg", width:"40%", height: "30%" %></a></li>
   <!--<li role="presentation" class="active"><a href="#"> <%= @email.reference_id.sub(".txt","")%>  </a></li>-->
-
-
-
-      <li class="dropdown">
+      <li class="dropdown" style=" margin-left: 30%;">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <%= image_tag "attachment.png", size: "20x20", alt: "attachment" %>
+          <%= image_tag "attachment.png", size: "30x30", alt: "attachment" %>
           Attachments (<%= @email.attachments.count%>)
           <span class="caret"></span></a>
         <ul class="dropdown-menu">
@@ -28,22 +70,35 @@
         </ul>
       </li>
 
+  
+  <!-- <div class="btn-group" data-toggle="buttons">
+    <label class="btn btn-primary active">
+      <input type="checkbox" checked> Responsive
+    </label>
+    <label class="btn btn-primary">
+      <input type="checkbox"> Privileged
+    </label>
+    <label class="btn btn-primary">
+      <input type="checkbox"> No Decision
+    </label>
+  </div> -->
+  
 
-  <div class="btn-group" role="group" style="width:100%; position: fixed; nav-right: 20px;" >
+
+  <div class="btn-group" role="group" style=" width:100%; position: fixed; nav-right: 80px;" >
     <div class="btn-group" role="group" style="margin-right: 1%; margin-left: 5%; ">
-
       <% if get_vote_status(current_user, @email) == "privilege" %>
-        <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-danger"%>
+        <%= button_to " Privileged ", like_email_path(@email), :class => "btn btn-danger"%>
       <% else %>
-        <%= button_to " Priviledged ", like_email_path(@email), :class => "btn btn-primary"%>
+        <%= button_to " Privileged", like_email_path(@email), :class => "btn btn-primary"%>
       <% end %>
     </div>
 
     <div class="btn-group" role="group" style="margin-right: 1%; ">
       <% if get_vote_status(current_user, @email) == "notprivilege" %>
-          <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-success "%>
+          <%= button_to " Not Privileged ", dislike_email_path(@email), :class => "btn btn-success "%>
       <% else %>
-          <%= button_to " Not Priviledged ", dislike_email_path(@email), :class => "btn btn-primary "%>
+          <%= button_to " Not Privileged ", dislike_email_path(@email), :class => "btn btn-primary "%>
       <% end %>
     </div>
     <div class="btn-group" role="group">
@@ -55,38 +110,151 @@
       <% end %>
     </div>
   </div>
-
 </ul>
 
-
-
 <% if current_user["user_type"] == "RECIPIENT" %>
+    
 
     <div class="container">
-      <div class="row">
-        <div >
-          <div class="fieldset">
-            <div class="email-text">
-              <%=  readfile.html_safe %>
+      <div class='row'>
+            <div id="wrapper"> 
+              <div class="fieldset" id="emailcolumn">
+                <div class="email-text" style="height: 650px;">
+                <!-- <textarea id="EmlDisplayArea" style="background-color: black;height: 650px;width: 450px;"> -->
+                 <!--  <%=  @email.content.gsub(/\n/, '<br/>').html_safe %> -->
+                  <%=  readfile.html_safe %>
+                <!-- </textarea> -->
+                </div>
+              </div>
+              
+            <div id="egocolumn" style="height: 650px;">
+                <div id="InputSlider">
+                  <div id="DivEgo">
+                    <i><center>Add Existing Entities Into Ego-Search Box </center></i>
+                    <br/>
+                    
+                    <form class="EgoForm">
+                      <table align="center">
+                      <% getPeople.each do |chk| %>
+                        <tr>
+                          <td>
+                            <li style="list-style: none;" class="ppl-checkbox" >
+                               <%= check_box_tag('chk[]', chk) %> 
+                               <%= chk %> 
+                            </li>
+                          </td>
+                          <td>
+                            <select name="egoOptions" style="margin-left: 3%; ">
+                            <option value="default">Select One</option>
+                            <option value="atty">As Attorney</option>
+                            <option value="client">As Client ego</option>
+                            <option value="repAtty">As Attorney's Representative</option>
+                            <option value="repClient">As Client's Representative</option>
+                            <option value="egoOther">Other</option>
+                            </select>
+                          </td>
+                      
+                      <% end %>
+                      </table>
+                    </form>
+                </div>
+                <div id="panaledDiv" class="row">
+                  <div id="DivEntity">
+                    <br/>
+                    <table id="divEntTab" border="0" cellspacing="50" margin="15">  
+                        <tr>
+                          <td style="height:50px; width:150px; padding-left: 20px" >Name </td>
+                          <td><input type="text" id="txtName" value="" /></td>
+                        </tr>
+                        <tr>
+                          <td style="height:50px; width:150px; padding-left: 20px">Role/Designation</td>
+                          <td><input type="text" id="txtRole" value="" /></td>
+                        </tr>
+                        <tr>
+                          <td style="height:50px; width:150px; padding-left: 20px">Organization</td>
+                          <td><input type="text" id="txtOrg" value="" /></td>
+                        </tr>
+                        <tr>
+                          <td style="height:50px; width:150px; padding-left: 20px">Importance Level</td>
+                          <td>
+                            <select id="sigValue" style="width:100px;"> 
+                              <option value="sigValueHigh">High</option>
+                              <option value="sigValueAverage">Average</option>
+                              <option value="sigValueLow">Marginal</option>
+                            </select>
+                          </td>
+                        </tr> 
+                                         
+                    </table>
+                    <br\>
+                    <a href="#" class="addEntity" style="padding-left: 20px;"> Add More </a>
+                  </div>
+
+                  <div id="PplTopicEntity">
+                    <br/>
+                    <table id="divPepTopTab" border="0" cellspacing="50" margin="15">  
+                        <tr>
+                          <td style="height:50px; width:150px; padding-left: 20px" >Name-1 </td>
+                          <td><input type="text" id="txtName1" value="" /></td>
+                        </tr>  
+                      
+                        <tr>
+                          <td style="height:50px; width:150px; padding-left: 20px">Name-2</td>
+                          <td><input type="text" id="txtName2" value="" /></td>
+                        </tr>
+                        <tr>
+                          <td style="height:50px; width:150px; padding-left: 20px">Relationship</td>
+                          <td><input type="text" id="txtRel" value="" /></td>
+                        </tr>
+                        <tr>
+                          <td style="height:50px; width:150px; padding-left: 20px">Topic/Terms</td>
+                          <td><input type="text" id="txtTopic" value="" /></td>
+                        </tr>
+                        
+                                         
+                    </table>
+                    <br\>
+                    <a href="#" class="addEntity" style="padding-left: 20px;"> Add More </a>
+                  </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="egoDisplay">
+          <!-- Trigger the modal with a button -->
+          <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Egos</button> -->
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Egos</h4>
+                </div>
+                <div class="modal-body">
+                   <center> <%= image_tag "ego.png" %> </center>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-
-        <div class='row-fluid'>
-          <div class=" panel" id="graphContainer" data-series="<%= gethistory %>"
-               data-dt="<%= getdate %>" style="min-width: 310px; height: 300px; margin: 0 auto" >
-          </div>
-
-        </div>
+        </div>    
+        <div id="bottomColumn">
+          <textarea class="form-control" rows="3"></textarea>
+          <!-- <div id="degreesIndicator" style="width: 700px; height: 500px; margin: 0 auto"></div>
+          <div id="correlationMat" style="height: 500px; width: 700px; margin: 0 auto"></div> -->
+        </div>    
+        
       </div>
-      <div text-align="center"> * The above graph plots Privilege propensity </div>
     </div>
 
 <% else %>
     <div class="container">
       <div class="row">
-        <div >
+        <div>
           <div class="fieldset_attachement">
             <div class="email-text">
               <%=  @email.content.gsub(/\n/, '<br/>').html_safe %>

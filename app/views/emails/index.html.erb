@@ -7,8 +7,6 @@
   <li role="presentation" class="active"><a href="<%= emails_path %>">
     <%= image_tag "umdlogo.jpeg", width:"30%", height: "30%" %></a></li></a></li>
   <li>
-
-
   </li>
   <ul class="nav navbar-nav navbar-right">
     <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></li>
@@ -34,10 +32,6 @@
       <tr class="general-content">
             <td><%= id_counter %> </td>
             <% subject = email.subject %>
-
-            
-
-          
             <td>
               <%= link_to email_path(email), :class => 'btn', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
               <%= subject %>

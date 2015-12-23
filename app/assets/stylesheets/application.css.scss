@@ -59,12 +59,10 @@ a {
   color: green;
   border-bottom: 1px dotted green
 }
-
-
 body {
-  margin: 20px 100px 10px 100px;
+  margin: 10px 10px 10px 10px;
   font: 100% Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 11px;
   background-color: #ffffff;
   line-height:24px;
 }
@@ -77,12 +75,21 @@ pre {
     width: 950px;
 }
 
+#InputSlider
+{
+    background-color:white;
+    color: black;
+    font-family: Arial;
+    font-size: 15px;
+}
+
+
 legend {
     display: block;
     padding-left: 2px;
     padding-right: 2px;
     border: solid;
-     width: 50px;
+    width: 50px;
 }
 
 // My color overrides
@@ -91,10 +98,102 @@ legend {
   border-color: #ffffff;
 }
 
-.email-text {
-  padding: 10px;
-  background: #f7f7f7;
+#wrapper {
+     width: 100%;
+     margin: 0 auto;
 }
+#bottomColumn {
+    border: 10px solid #f1f1f1;
+    padding: 10px 10px;
+    border-radius: 25px;
+    border-color: #f1f1f1;
+    float: left;
+    min-height: 150px;
+    color: black;
+}
+#bottomColumn {
+     width: 100%;
+     display: flex;
+     background-color: white;
+}
+#emailcolumn, #egocolumn {
+    float: left;
+    min-height: 450px;
+    
+}
+#emailcolumn {
+    border: 5px solid white;
+    padding: 10px 40px 10px;
+    border-radius: 25px;
+    border-color: white;
+    width: 60%;
+    background: #585858;
+    color: white;
+}
+
+#egocolumn {
+     width: 40%;
+     background-color: white;
+     color: black;
+}
+
+#DivEgo
+{
+    overflow: auto;
+    border: 10px solid #f1f1f1;
+    border-radius: 25px;
+    border-color: #f1f1f1;
+    background: white;
+    height:350px;
+    margin-bottom:10px;
+     
+}
+
+#panaledDiv {
+     display: flex;
+     background-color: white;
+}
+
+#DivEntity
+{
+    overflow: auto;
+    border: 10px solid #f1f1f1;
+    border-radius: 25px;
+    border-color: #f1f1f1;
+    background: white;
+    height:290px;
+    margin-left:15px;
+    margin-right:10px;  
+}
+
+#PplTopicEntity
+{
+    overflow: auto;
+    border: 10px solid #f1f1f1;
+    border-radius: 25px;
+    border-color: #f1f1f1;
+    background: white;
+    height:290px;
+     
+}
+
+
+li.ppl-checkbox 
+{
+    color: black;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.email-text {
+  padding: 5px;
+  #background: #f7f7f7;
+}
+
+.container {
+    width: 90%;
+  }
 
 .my-code-20less {
   padding: 2px 4px;
@@ -487,7 +586,7 @@ legend {
 // -----------
 .fieldset {
   width: 100%;
-  height: 350px;
+  height: 650px;
   overflow-x: scroll;
   position:relative;
   font-size:18px;
@@ -499,6 +598,22 @@ legend {
   font-style:normal;
   *zoom:1
 }
+
+.fieldsetPhaseTwo {
+  width: 100%;
+  height: 650px;
+  overflow-x: scroll;
+  position:relative;
+  font-size:18px;
+  line-height:1.5;
+  margin-bottom:30px;
+  font-family:"freight-text-pro",Georgia,Cambria,"Times New Roman",Times,serif;
+  letter-spacing:.01rem;
+  font-weight:400;
+  font-style:normal;
+  *zoom:1
+}
+
 
 .fieldset_attachement {
   width: 100%;
@@ -526,20 +641,20 @@ legend {
 .text-low-importance {
   //padding: 2px 4px;
   font-size: 90%;
-  color: #FF6666;
+  //color: #FF6666;
   //border-radius: 4px;
 }
 
 .text-mid-importance {
   //padding: 2px 4px;
   font-size: 90%;
-  color: #FF0000;
+  //color: #FF0000;
   //border-radius: 4px;
 }
 
 .text-high-importance {
   //padding: 2px 4px;
   font-size: 90%;
-  color: #990000;
+  //color: #990000;
   //border-radius: 4px;
 }
